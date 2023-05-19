@@ -46,7 +46,7 @@
 
     <!-- ein -->
 
-     <div class="d-flex flex-row main__index" height="full">
+     <div class="d-flex flex-row main__index">
   <navbar>
   </navbar>
     <v-main>
@@ -74,7 +74,7 @@ export default {
 
 <style scoped>
 .main__index {
-  height: 100vh;
+  /*height: 100vh; */
 }
 
 </style>
