@@ -277,18 +277,16 @@
           <v-card flat>
             <v-row>
               <v-col cols="12" sm="6" md="6">
-                <v-radio-group v-model="chosenPreset" column>
+                <v-radio-group v-model="dataStep2.preset" column>
                   <v-radio
                     label="Build Creatives"
                     color="red"
                     :value="dataForPresets.preset1Data"
-                    @click="addPreset(dataForPresets.preset1Data)"
                   ></v-radio>
                   <v-radio
                     label="Publish campaigns"
                     color="red darken-3"
                     :value="dataForPresets.preset2Data"
-                    @click="addPreset(dataForPresets.preset2Data)"
                   ></v-radio>
                 </v-radio-group>
               </v-col>
@@ -318,32 +316,81 @@
       <v-stepper-content step="4">
         <v-card class="mb-12" color="grey lighten-1">
           <v-card max-width="50%" class="mx-auto">
-          <v-checkbox v-model="dataStep3.userTypes" 
-          label="Admin" 
-          :value="dataForUserTypes.admin"
-          @click="addUserTypeChoice"
-          ></v-checkbox>
-          <v-checkbox
-            v-model="dataStep3.userTypes"
-            label="Creative"
-            :value="dataForUserTypes.creative"
-            @click="addUserTypeChoice"
-          ></v-checkbox>
+            <v-checkbox
+              v-model="dataStep4.userTypes"
+              label="Admin"
+              :value="dataForUserTypes.admin"
+            ></v-checkbox>
+            <v-checkbox
+              v-model="dataStep4.userTypes"
+              label="Creative"
+              :value="dataForUserTypes.creative"
+            ></v-checkbox>
           </v-card>
         </v-card>
 
         <v-btn text @click="e1 = 3"> Back </v-btn>
 
-        <v-btn color="primary" @click="e1 = 5"> Continue </v-btn>
+        <v-btn color="primary" @click="addDataStep4"> Continue </v-btn>
       </v-stepper-content>
 
       <!-- STEP 5: summary -->
       <v-stepper-content step="5">
-        <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
+        <!-- content -->
+        <v-card color="grey lighten-4" class="content stepper">
+          <!-- client summary block BEGIN -->
+          <v-card max-width="50%" class="mx-auto">
+            <v-card-actions>
+              <v-card-title>
+                Client: {{ dataForJson.clientName }}
+              </v-card-title>
 
+              <v-spacer></v-spacer>
+
+              <v-btn icon @click="showSummaryClient = !showSummaryClient">
+                <v-icon>{{
+                  showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
+                }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+
+            <v-expand-transition>
+              <div v-show="showSummaryClient">
+                <v-divider></v-divider>
+
+                <v-card>
+                  <v-card-title>Brands</v-card-title>
+                  <v-card-subtitle>{{
+                    dataForJson.brands.join(", ")
+                  }}</v-card-subtitle>
+                </v-card>
+
+                <v-card>
+                  <v-card-title>Departments</v-card-title>
+                  <v-card-subtitle>{{
+                    dataForJson.departments.join(", ")
+                  }}</v-card-subtitle>
+                </v-card>
+
+                <v-card>
+                  <v-card-title>Markets</v-card-title>
+                  <v-card-subtitle>{{
+                    dataForJson.markets.join(", ")
+                  }}</v-card-subtitle>
+                </v-card>
+              </div>
+            </v-expand-transition>
+          </v-card>
+          <!-- client summary block EINDE -->
+        </v-card>
+        <!--buttons-->
+
+        <a id="invissibleButtonJSONDownload"></a>
         <v-btn text> Back </v-btn>
 
-        <v-btn color="primary"> Launch environment </v-btn>
+        <v-btn color="primary" @click="downloadJSON">
+          Launch environment
+        </v-btn>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -359,6 +406,8 @@ export default {
     showBrands: false,
     showDeparments: false,
     showMarkets: false,
+
+    showSummaryClient: false,
     dataForJson: {
       //step1
       clientName: "",
@@ -387,7 +436,7 @@ export default {
     dataStep2: {
       preset: {},
     },
-    dataStep3: {
+    dataStep4: {
       userTypes: [],
     },
 
@@ -415,21 +464,15 @@ export default {
     chosenUsertype: {},
 
     //data voor user types (checkboxes)
-    dataForUserTypes:{
+    dataForUserTypes: {
       admin: {
         userTypename: "admin",
-        rights:[
-          "full acces",
-          "collaborate"
-        ]
+        rights: ["full acces", "collaborate"],
       },
       creative: {
         userTypename: "creative",
-        rights:[
-          "full acces",
-          "collaborate"
-        ]
-      }
+        rights: ["full acces", "collaborate"],
+      },
     },
     //gekozen preset afvangen
     chosenUsertypes: {},
@@ -451,14 +494,6 @@ export default {
       console.log(this.dataStep1);
     },
 
-    addPreset(presetChoice) {
-      this.dataStep2.preset = presetChoice;
-    },
-
-    addUserTypeChoice() {
-      console.log(this.dataStep3.userTypes)
-    },
-
     addDataStep1() {
       this.e1 = 2;
       this.dataForJson = {
@@ -475,6 +510,26 @@ export default {
         ...this.dataStep2,
       };
       console.log(this.dataForJson);
+    },
+
+    addDataStep4() {
+      this.e1 = 5;
+      this.dataForJson = {
+        ...this.dataForJson,
+        ...this.dataStep4,
+      };
+      console.log(this.dataForJson);
+    },
+
+    downloadJSON() {
+      let objectToJSON = JSON.stringify(this.dataForJson, null, 2);
+      let JSONForDownload =
+        "data:text/json;charset=utf-8," + encodeURIComponent(objectToJSON);
+
+      let invissibleButton = document.getElementById('invissibleButtonJSONDownload');
+      invissibleButton.setAttribute("href", JSONForDownload);
+      invissibleButton.setAttribute("download", "newClient.json");
+      invissibleButton.click();
     },
   },
 };
