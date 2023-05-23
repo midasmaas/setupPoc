@@ -1,7 +1,7 @@
 <template>
-  <v-stepper v-model="e1" height="100%">
+  <v-stepper v-model="e1" class="stepper grey lighten-4">
     <!-- stepper balk BEGIN-->
-    <v-stepper-header>
+    <v-stepper-header class="sticky-top">
       <v-stepper-step :complete="e1 > 1" step="1"> Client </v-stepper-step>
 
       <v-divider></v-divider>
@@ -29,10 +29,19 @@
     <!-- content per stap -->
     <v-stepper-items>
       <!-- STEP 1: client -->
-      <v-stepper-content step="1" class="pa-0">
-        <v-card color="grey lighten-4" class="content stepper">
+      <v-stepper-content step="1" class="step">
+        <v-container class="container" fluid>
+          <!-- step title -->
+          <v-row class="ma-2">
+            <h1>Which company is it and how is it organised?</h1>
+            <p class="grey--text font-weight-medium">
+              A company can use brands, departments, and markets to manage
+              content and people.
+            </p>
+          </v-row>
+
           <!-- details block BEGIN -->
-          <v-card max-width="50%" class="mx-auto">
+          <v-card class="mt-3 mb-4">
             <v-card-actions>
               <v-card-title> Details </v-card-title>
 
@@ -84,8 +93,11 @@
           </v-card>
           <!-- details block EINDE -->
 
+          <!-- step sub title-->
+          <h3 class="mx-1 my-6">Organisational structure</h3>
+
           <!-- Brands block BEGIN -->
-          <v-card max-width="50%" class="mx-auto">
+          <v-card class="my-8">
             <v-card-actions>
               <v-card-title> Brands </v-card-title>
 
@@ -109,42 +121,47 @@
             </v-card-actions>
 
             <v-expand-transition>
-              <div v-show="showBrands && dataStep1.brands.length > 0">
+              <div
+                class="pb-1"
+                v-show="showBrands && dataStep1.brands.length > 0"
+              >
                 <v-divider></v-divider>
 
-                <v-row
-                  class="py-8"
+                <v-card
+                  class="ma-4"
+                  outlined
                   v-for="(brand, key) in dataStep1.brands"
                   :key="key"
                 >
-                  <v-col cols="8">
+                  <v-row align="center" justify="center">
                     <v-text-field
                       label="New brand"
                       placeholder="Client"
                       outlined
                       v-model="dataStep1.brands[key]"
+                      class="shrink pt-8 mx-6"
                     >
                     </v-text-field>
-                  </v-col>
 
-                  <v-col cols="4">
+                    <v-spacer></v-spacer>
+
                     <v-btn
                       @click="dataStep1.brands.splice(key, 1)"
                       class="ma-2"
-                      outlined
-                      color="red"
+                      text
+                      color="grey"
                     >
-                      remove
+                      <v-icon center> mdi-close</v-icon>
                     </v-btn>
-                  </v-col>
-                </v-row>
+                  </v-row>
+                </v-card>
               </div>
             </v-expand-transition>
           </v-card>
           <!-- Brands block EINDE -->
 
           <!-- Departments block BEGIN -->
-          <v-card max-width="50%" class="mx-auto">
+          <v-card class="my-8">
             <v-card-actions>
               <v-card-title> Departments </v-card-title>
 
@@ -168,42 +185,46 @@
             </v-card-actions>
 
             <v-expand-transition>
-              <div v-show="showDeparments && dataStep1.departments.length > 0">
+              <div
+                class="pb-1"
+                v-show="showDeparments && dataStep1.departments.length > 0"
+              >
                 <v-divider></v-divider>
-
-                <v-row
-                  class="py-8"
+                <v-card
+                  class="ma-4"
+                  outlined
                   v-for="(brand, key) in dataStep1.departments"
                   :key="key"
                 >
-                  <v-col cols="8">
+                  <v-row align="center" justify="center">
                     <v-text-field
                       label="New department"
-                      placeholder="Client"
+                      placeholder="Department"
                       outlined
                       v-model="dataStep1.departments[key]"
+                      class="shrink pt-8 mx-6"
                     >
                     </v-text-field>
-                  </v-col>
 
-                  <v-col cols="4">
+                    <v-spacer></v-spacer>
+
                     <v-btn
                       @click="dataStep1.departments.splice(key, 1)"
                       class="ma-2"
-                      outlined
-                      color="red"
+                      text
+                      color="grey"
                     >
-                      remove
+                      <v-icon center> mdi-close</v-icon>
                     </v-btn>
-                  </v-col>
-                </v-row>
+                  </v-row>
+                </v-card>
               </div>
             </v-expand-transition>
           </v-card>
           <!-- Departments block EINDE -->
 
           <!-- Markets block BEGIN -->
-          <v-card max-width="50%" class="mx-auto">
+          <v-card class="my-8">
             <v-card-actions>
               <v-card-title> Markets </v-card-title>
 
@@ -227,52 +248,71 @@
             </v-card-actions>
 
             <v-expand-transition>
-              <div v-show="showMarkets && dataStep1.markets.length > 0">
+              <div
+                class="pb-1"
+                v-show="showMarkets && dataStep1.markets.length > 0"
+              >
                 <v-divider></v-divider>
 
-                <v-row
-                  class="py-8"
+                <v-card
+                  class="ma-4"
+                  outlined
                   v-for="(brand, key) in dataStep1.markets"
                   :key="key"
                 >
-                  <v-col cols="8">
+                  <v-row align="center" justify="center">
+                    <!--
                     <v-text-field
-                      label="New department"
-                      placeholder="Client"
+                      label="New market"
+                      placeholder="Market"
                       outlined
                       v-model="dataStep1.markets[key]"
+                      class="shrink pt-8 mx-6"
                     >
                     </v-text-field>
-                  </v-col>
+                    -->
+                    <v-autocomplete
+                      v-model="dataStep1.markets[key].marketCountry"
+                      :items="dataForMarkets.marketNames"
+                      class="shrink pt-8 mx-6"
+                      @change="dataForLanguages(dataStep1.markets[key].marketCountry, key)"
+                    ></v-autocomplete>
 
-                  <v-col cols="4">
+                    <v-autocomplete v-if="brand"
+                      v-model="dataStep1.markets[key].marketLanguages"
+                      :items="dataForMarkets.marketLanguages[brand.marketCountry]"
+                      chips
+                      full-width
+                      hide-details
+                      hide-no-data
+                      hide-selected
+                      multiple
+                      single-line
+                    >
+                    </v-autocomplete>
+                    <v-spacer></v-spacer>
+
                     <v-btn
                       @click="dataStep1.markets.splice(key, 1)"
                       class="ma-2"
-                      outlined
-                      color="red"
+                      text
+                      color="grey"
                     >
-                      remove
+                      <v-icon center> mdi-close</v-icon>
                     </v-btn>
-                  </v-col>
-                </v-row>
+                  </v-row>
+
+                  <v-row> </v-row>
+                </v-card>
               </div>
             </v-expand-transition>
           </v-card>
           <!-- Markets block EINDE -->
-        </v-card>
-
-        <!--Buttons BEGIN-->
-        <v-row class="py-8">
-          <v-btn text> Back </v-btn>
-
-          <v-btn color="primary" @click="addDataStep1"> Continue </v-btn>
-        </v-row>
-        <!--Buttons EINDE-->
+        </v-container>
       </v-stepper-content>
 
       <!-- STEP 2: client -->
-      <v-stepper-content step="2">
+      <v-stepper-content step="2" class="step">
         <v-card class="mb-12" color="grey lighten-4">
           <v-card flat>
             <v-row>
@@ -293,27 +333,15 @@
             </v-row>
           </v-card>
         </v-card>
-
-        <!--Buttons BEGIN-->
-        <v-row class="py-8">
-          <v-btn text @click="e1 = 1"> Back </v-btn>
-
-          <v-btn color="primary" @click="addDataStep2"> Continue </v-btn>
-        </v-row>
-        <!--Buttons EINDE-->
       </v-stepper-content>
 
       <!-- STEP 3: presetoptions -->
-      <v-stepper-content step="3">
+      <v-stepper-content step="3" class="step">
         <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-        <v-btn text> Back </v-btn>
-
-        <v-btn color="primary" @click="e1 = 4"> Continue </v-btn>
       </v-stepper-content>
 
       <!-- STEP 4: user types -->
-      <v-stepper-content step="4">
+      <v-stepper-content step="4" class="step">
         <v-card class="mb-12" color="grey lighten-1">
           <v-card max-width="50%" class="mx-auto">
             <v-checkbox
@@ -328,14 +356,10 @@
             ></v-checkbox>
           </v-card>
         </v-card>
-
-        <v-btn text @click="e1 = 3"> Back </v-btn>
-
-        <v-btn color="primary" @click="addDataStep4"> Continue </v-btn>
       </v-stepper-content>
 
       <!-- STEP 5: summary -->
-      <v-stepper-content step="5">
+      <v-stepper-content step="5" class="step">
         <!-- content -->
         <v-card color="grey lighten-4" class="content stepper">
           <!-- client summary block BEGIN -->
@@ -383,16 +407,120 @@
           </v-card>
           <!-- client summary block EINDE -->
         </v-card>
-        <!--buttons-->
-
-        <a id="invissibleButtonJSONDownload"></a>
-        <v-btn text> Back </v-btn>
-
-        <v-btn color="primary" @click="downloadJSON">
-          Launch environment
-        </v-btn>
       </v-stepper-content>
     </v-stepper-items>
+
+    <!--Buttons BEGIN-->
+
+    <v-card color="white" v-show="e1 === 1" class="py-8 sticky-bottom">
+      <v-row class="align-center">
+        <v-btn color="primary" class="mx-4" text>
+          <v-icon left> mdi-arrow-left </v-icon>
+          Back
+        </v-btn>
+
+        <v-spacer></v-spacer>
+
+        <h3
+          class="grey--text font-weight-medium"
+          v-show="dataForJson.clientName"
+        >
+          New Client: {{ dataForJson.clientName }}
+        </h3>
+
+        <v-spacer></v-spacer>
+        <v-btn class="mx-6" color="primary" @click="addDataStep1">
+          Continue
+        </v-btn>
+      </v-row>
+    </v-card>
+
+    <v-card color="white" v-show="e1 === 2" class="py-8 sticky-bottom">
+      <v-row class="align-center">
+        <v-btn color="primary" class="mx-4" text @click="e1 = 1">
+          <v-icon left> mdi-arrow-left </v-icon>
+          Back
+        </v-btn>
+        <v-spacer></v-spacer>
+        <h3
+          class="grey--text font-weight-medium"
+          v-show="dataForJson.clientName"
+        >
+          New Client: {{ dataForJson.clientName }}
+        </h3>
+
+        <v-spacer></v-spacer>
+        <v-btn class="mx-6" color="primary" @click="addDataStep2">
+          Continue
+        </v-btn>
+      </v-row>
+    </v-card>
+
+    <v-card color="white" v-show="e1 === 3" class="py-8 sticky-bottom">
+      <v-row class="align-center">
+        <v-btn color="primary" class="mx-4" text @click="e1 = 2">
+          <v-icon left> mdi-arrow-left </v-icon>
+          Back
+        </v-btn>
+        <v-spacer></v-spacer>
+        <h3
+          class="grey--text font-weight-medium"
+          v-show="dataForJson.clientName"
+        >
+          New Client: {{ dataForJson.clientName }}
+        </h3>
+
+        <v-spacer></v-spacer>
+        <v-btn class="mx-6" color="primary" @click="e1 = 4"> Continue </v-btn>
+      </v-row>
+    </v-card>
+
+    <v-card color="white" v-show="e1 === 4" class="py-8 sticky-bottom">
+      <v-row class="align-center">
+        <v-btn color="primary" class="mx-4" text @click="e1 = 3">
+          <v-icon left> mdi-arrow-left </v-icon>
+          Back
+        </v-btn>
+        <v-spacer></v-spacer>
+        <h3
+          class="grey--text font-weight-medium"
+          v-show="dataForJson.clientName"
+        >
+          New Client: {{ dataForJson.clientName }}
+        </h3>
+
+        <v-spacer></v-spacer>
+
+        <v-btn color="primary" @click="addDataStep4" class="mx-6">
+          Continue
+        </v-btn>
+      </v-row>
+    </v-card>
+
+    <v-card color="white" v-show="e1 === 5" class="py-8 sticky-bottom">
+      <v-row class="align-center">
+        <v-btn color="primary" class="mx-4" text @click="e1 = 4">
+          <v-icon left> mdi-arrow-left </v-icon>
+          Back
+        </v-btn>
+        <a id="invissibleButtonJSONDownload"></a>
+        <v-spacer></v-spacer>
+        <h3
+          class="grey--text font-weight-medium"
+          v-show="dataForJson.clientName"
+        >
+          New Client: {{ dataForJson.clientName }}
+        </h3>
+
+        <v-spacer></v-spacer>
+
+        <v-btn class="mx-6" color="primary" @click="downloadJSON">
+          Launch environment
+        </v-btn>
+      </v-row>
+    </v-card>
+
+    <!--Buttons EINDE-->
   </v-stepper>
 </template>
 
@@ -406,7 +534,7 @@ export default {
     showBrands: false,
     showDeparments: false,
     showMarkets: false,
-
+    test: [],
     showSummaryClient: false,
     dataForJson: {
       //step1
@@ -415,7 +543,8 @@ export default {
       contactCompany: "",
       brands: [],
       departments: [],
-      markets: [],
+      markets: [
+      ],
 
       //step2
       preset: {},
@@ -431,7 +560,9 @@ export default {
       contactCompany: "",
       brands: [],
       departments: [],
-      markets: [],
+      markets: [
+        
+      ],
     },
     dataStep2: {
       preset: {},
@@ -454,6 +585,17 @@ export default {
         modules: ["multiMarket", "templateDesigner"],
         channels: ["landingspage", "radio"],
         campaignformatTitle: "Publish campaigns",
+      },
+    },
+
+    // data voor markets
+    chosenMarkets: null,
+    dataForMarkets: {
+      marketNames: ["Belgie", "Nederland", "Duitsland"],
+      marketLanguages: {
+        Belgie: ["DU", "GE", "FR"],
+        Nederland: ["PL", "DU"],
+        Duitsland: ["GE"],
       },
     },
 
@@ -490,8 +632,12 @@ export default {
 
     addMarketsTextfield() {
       this.showMarkets = true;
-      this.dataStep1.markets.push("");
+      this.dataStep1.markets.push({marketCountry: "", marketLanguages: []});
       console.log(this.dataStep1);
+    },
+    dataForLanguages(market, key){
+      let autoCompleteLanguages = this.dataForMarkets.marketLanguages[market];
+      this.dataStep1.markets[key].marketLanguages = autoCompleteLanguages;
     },
 
     addDataStep1() {
@@ -526,29 +672,56 @@ export default {
       let JSONForDownload =
         "data:text/json;charset=utf-8," + encodeURIComponent(objectToJSON);
 
-      let invissibleButton = document.getElementById('invissibleButtonJSONDownload');
+      let invissibleButton = document.getElementById(
+        "invissibleButtonJSONDownload"
+      );
       invissibleButton.setAttribute("href", JSONForDownload);
-      invissibleButton.setAttribute("download", "newClient.json");
+      invissibleButton.setAttribute(
+        "download",
+        this.dataForJson.clientName + ".json"
+      );
       invissibleButton.click();
     },
+    consoleBrand(toLog){
+      console.log(toLog)
+    }
+    
   },
 };
 </script>
 
 <style scoped>
-.content {
+.sticky-top {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 1;
+}
+
+.sticky-bottom {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  bottom: 0;
+  background-color: #ffffff;
+  z-index: 1;
+}
+
+.stepper-scrollable-content {
+}
+
+.stepper {
+  overflow: visible;
+  z-index: 0;
+  min-height: 98vh;
   position: relative;
 }
 
-.sticky {
-  position: sticky;
-  bottom: 0;
+.step {
+  min-height: 98vh;
 }
 
-.backgroundColor {
-  background-color: #b05454;
-}
-.stepper {
-  overflow: scroll;
+.container {
+  width: 50%;
 }
 </style>

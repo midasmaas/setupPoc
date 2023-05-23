@@ -4,6 +4,8 @@
 
         :mini-variant= true
         expand-on-hover
+        fixed
+        app
       >
         <v-list
           dense
