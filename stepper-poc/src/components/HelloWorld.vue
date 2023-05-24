@@ -261,35 +261,18 @@
                   :key="key"
                 >
                   <v-row align="center" justify="center">
-                    <!--
-                    <v-text-field
-                      label="New market"
-                      placeholder="Market"
-                      outlined
-                      v-model="dataStep1.markets[key]"
-                      class="shrink pt-8 mx-6"
-                    >
-                    </v-text-field>
-                    -->
                     <v-autocomplete
                       v-model="dataStep1.markets[key].marketCountry"
                       :items="dataForMarkets.marketNames"
                       class="shrink pt-8 mx-6"
-                      @change="dataForLanguages(dataStep1.markets[key].marketCountry, key)"
+                      @change="
+                        dataForLanguages(
+                          dataStep1.markets[key].marketCountry,
+                          key
+                        )
+                      "
                     ></v-autocomplete>
 
-                    <v-autocomplete v-if="brand"
-                      v-model="dataStep1.markets[key].marketLanguages"
-                      :items="dataForMarkets.marketLanguages[brand.marketCountry]"
-                      chips
-                      full-width
-                      hide-details
-                      hide-no-data
-                      hide-selected
-                      multiple
-                      single-line
-                    >
-                    </v-autocomplete>
                     <v-spacer></v-spacer>
 
                     <v-btn
@@ -302,7 +285,30 @@
                     </v-btn>
                   </v-row>
 
-                  <v-row> </v-row>
+                  <h4
+                    class="mx-4 my-2"
+                    v-if="dataForMarkets.marketLanguages[brand.marketCountry]"
+                  >
+                    Languages
+                  </h4>
+                  <v-row align="center">
+                    <v-autocomplete
+                      v-if="dataForMarkets.marketLanguages[brand.marketCountry]"
+                      v-model="dataStep1.markets[key].marketLanguages"
+                      :items="
+                        dataForMarkets.marketLanguages[brand.marketCountry]
+                      "
+                      chips
+                      full-width
+                      hide-details
+                      hide-no-data
+                      hide-selected
+                      multiple
+                      single-line
+                      class="shrink pb-8 mx-6"
+                    >
+                    </v-autocomplete>
+                  </v-row>
                 </v-card>
               </div>
             </v-expand-transition>
@@ -313,26 +319,34 @@
 
       <!-- STEP 2: client -->
       <v-stepper-content step="2" class="step">
-        <v-card class="mb-12" color="grey lighten-4">
-          <v-card flat>
-            <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-radio-group v-model="dataStep2.preset" column>
-                  <v-radio
-                    label="Build Creatives"
-                    color="red"
-                    :value="dataForPresets.preset1Data"
-                  ></v-radio>
-                  <v-radio
-                    label="Publish campaigns"
-                    color="red darken-3"
-                    :value="dataForPresets.preset2Data"
-                  ></v-radio>
-                </v-radio-group>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-card>
+        <v-container class="containerClient" fluid>
+          <v-radio-group v-model="dataStep2.preset" column>
+            <v-card>
+              <v-row class="ma-8">
+              <v-radio
+                active-class="active"
+                label="Build Creatives"
+                color="red"
+                :value="dataForPresets.preset1Data"
+              >
+              </v-radio>
+              <v-spacer></v-spacer>
+                <v-btn color="primary" class="mx-4" text>
+                  
+                  info
+                </v-btn>
+              </v-row>
+            </v-card>
+            <v-card>
+              <v-radio
+                active-class="active"
+                label="Publish campaigns"
+                color="red darken-3"
+                :value="dataForPresets.preset2Data"
+              ></v-radio>
+            </v-card>
+          </v-radio-group>
+        </v-container>
       </v-stepper-content>
 
       <!-- STEP 3: presetoptions -->
@@ -543,8 +557,7 @@ export default {
       contactCompany: "",
       brands: [],
       departments: [],
-      markets: [
-      ],
+      markets: [],
 
       //step2
       preset: {},
@@ -560,9 +573,7 @@ export default {
       contactCompany: "",
       brands: [],
       departments: [],
-      markets: [
-        
-      ],
+      markets: [],
     },
     dataStep2: {
       preset: {},
@@ -632,10 +643,10 @@ export default {
 
     addMarketsTextfield() {
       this.showMarkets = true;
-      this.dataStep1.markets.push({marketCountry: "", marketLanguages: []});
+      this.dataStep1.markets.push({ marketCountry: "", marketLanguages: [] });
       console.log(this.dataStep1);
     },
-    dataForLanguages(market, key){
+    dataForLanguages(market, key) {
       let autoCompleteLanguages = this.dataForMarkets.marketLanguages[market];
       this.dataStep1.markets[key].marketLanguages = autoCompleteLanguages;
     },
@@ -682,10 +693,9 @@ export default {
       );
       invissibleButton.click();
     },
-    consoleBrand(toLog){
-      console.log(toLog)
-    }
-    
+    consoleBrand(toLog) {
+      console.log(toLog);
+    },
   },
 };
 </script>
@@ -707,9 +717,6 @@ export default {
   z-index: 1;
 }
 
-.stepper-scrollable-content {
-}
-
 .stepper {
   overflow: visible;
   z-index: 0;
@@ -722,6 +729,14 @@ export default {
 }
 
 .container {
+  width: 40%;
+}
+
+.containerClient {
   width: 50%;
+}
+
+.active {
+  border: 2px solid #2b81d6;
 }
 </style>
