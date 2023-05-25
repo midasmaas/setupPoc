@@ -320,30 +320,131 @@
       <!-- STEP 2: client -->
       <v-stepper-content step="2" class="step">
         <v-container class="containerClient" fluid>
-          <v-radio-group v-model="dataStep2.preset" column>
-            <v-card>
-              <v-row class="ma-8">
-              <v-radio
-                active-class="active"
-                label="Build Creatives"
-                color="red"
-                :value="dataForPresets.preset1Data"
-              >
-              </v-radio>
-              <v-spacer></v-spacer>
-                <v-btn color="primary" class="mx-4" text>
+          <!--Info dialog BEGIN-->
+          <v-row justify="center">
+            <v-dialog
+              v-model="dialog"
+              fullscreen
+              hide-overlay
+              transition="dialog-bottom-transition"
+            >
+              <v-card>
+                <v-toolbar class="height-modal-toolbar">
                   
+                  <div class="modal-title-description">
+                  <v-toolbar-title>{{
+                    currentPresetInfo.title
+                  }}</v-toolbar-title>
+                  
+                  <h3>{{currentPresetInfo.subTitle}}</h3>
+                  </div>
+
+                  
+                  <v-spacer></v-spacer>
+                  <v-btn icon @click="dialog = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                  
+                </v-toolbar>
+                <v-list three-line subheader>
+                  <v-subheader>User Controls</v-subheader>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>Content filtering</v-list-item-title>
+                      <v-list-item-subtitle
+                        >Set the content filtering level to restrict apps that
+                        can be downloaded</v-list-item-subtitle
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>Password</v-list-item-title>
+                      <v-list-item-subtitle
+                        >Require password for purchase or use password to
+                        restrict purchase</v-list-item-subtitle
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+                <v-divider></v-divider>
+                <v-list three-line subheader>
+                  <v-subheader>General</v-subheader>
+                  <v-list-item>
+                    <v-list-item-action>
+                      <v-checkbox v-model="notifications"></v-checkbox>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-list-item-title>Notifications</v-list-item-title>
+                      <v-list-item-subtitle
+                        >Notify me about updates to apps or games that I
+                        downloaded</v-list-item-subtitle
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-action>
+                      <v-checkbox v-model="sound"></v-checkbox>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-list-item-title>Sound</v-list-item-title>
+                      <v-list-item-subtitle
+                        >Auto-update apps at any time. Data charges may
+                        apply</v-list-item-subtitle
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-action>
+                      <v-checkbox v-model="widgets"></v-checkbox>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-list-item-title>Auto-add widgets</v-list-item-title>
+                      <v-list-item-subtitle
+                        >Automatically add home screen
+                        widgets</v-list-item-subtitle
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-dialog>
+          </v-row>
+          <!--Info dialog EINDE-->
+          <v-radio-group v-model="dataStep2.preset" column>
+            <v-card class="ma-4">
+              <v-row class="ma-6">
+                <v-radio
+                  active-class="active"
+                  label="Build Creatives"
+                  color="red"
+                  :value="dataForPresets.preset1Data"
+                  class="mb-0"
+                >
+                </v-radio>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="primary"
+                  class="mx-4"
+                  text
+                  @click="presetInfo(dataForPresets.preset1Data.presetInfo)"
+                >
                   info
                 </v-btn>
               </v-row>
             </v-card>
-            <v-card>
-              <v-radio
-                active-class="active"
-                label="Publish campaigns"
-                color="red darken-3"
-                :value="dataForPresets.preset2Data"
-              ></v-radio>
+            <v-card class="ma-4">
+              <v-row class="ma-6">
+                <v-radio
+                  active-class="active"
+                  label="Publish campaigns"
+                  color="red darken-3"
+                  :value="dataForPresets.preset2Data"
+                  class="mb-0"
+                ></v-radio>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" class="mx-4" text> info </v-btn>
+              </v-row>
             </v-card>
           </v-radio-group>
         </v-container>
@@ -589,6 +690,10 @@ export default {
         modules: ["multiMarket", "templateDesigner"],
         channels: ["social", "email"],
         campaignformatTitle: "BuildCreatives",
+        presetInfo: {
+          title: "Build Creatives",
+          subTitle: "Create template based creatives in Cape and download them locally."
+        },
       },
 
       preset2Data: {
@@ -596,7 +701,19 @@ export default {
         modules: ["multiMarket", "templateDesigner"],
         channels: ["landingspage", "radio"],
         campaignformatTitle: "Publish campaigns",
+        presetInfo: {
+          title: "Publish campaigns",
+          subTitle: "Create template based creatives and publish to ad platforms."
+        },
       },
+    },
+
+    //data voor info presets
+    infoClickedPreset: {
+      title: "",
+      modules: [],
+      channels: [],
+      campaignformatTitle: "",
     },
 
     // data voor markets
@@ -610,11 +727,12 @@ export default {
       },
     },
 
-    //gekozen preset afvangen
-    chosenPreset: {},
-
-    //gekozen usertype
-    chosenUsertype: {},
+    //data voor info modal presets
+    dialog: false,
+    currentPresetInfo: {},
+    notifications: false,
+    sound: true,
+    widgets: false,
 
     //data voor user types (checkboxes)
     dataForUserTypes: {
@@ -627,8 +745,6 @@ export default {
         rights: ["full acces", "collaborate"],
       },
     },
-    //gekozen preset afvangen
-    chosenUsertypes: {},
   }),
   methods: {
     addBrandsTextfield() {
@@ -667,6 +783,11 @@ export default {
         ...this.dataStep2,
       };
       console.log(this.dataForJson);
+    },
+
+    presetInfo(CurrentPresetInfoParam) {
+      this.dialog = true;
+      this.currentPresetInfo = CurrentPresetInfoParam;
     },
 
     addDataStep4() {
@@ -738,5 +859,10 @@ export default {
 
 .active {
   border: 2px solid #2b81d6;
+}
+
+.modal-title-description {
+  display: flex;
+  flex-direction: column;
 }
 </style>
