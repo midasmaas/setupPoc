@@ -707,19 +707,19 @@
           </v-card>
 
           <v-btn class="ma-2" outlined color="primary">
-            
             custom
             <v-icon right> mdi-account </v-icon>
-            </v-btn>
+          </v-btn>
         </v-container>
       </v-stepper-content>
 
       <!-- STEP 5: summary -->
       <v-stepper-content step="5" class="step">
-        <!-- content -->
-        <v-card color="grey lighten-4" class="content stepper">
-          <!-- client summary block BEGIN -->
-          <v-card max-width="50%" class="mx-auto">
+        <v-container class="containerUsertypes" fluid>
+          <!-- content -->
+
+          <!-- client summary block -->
+          <v-card class="my-4">
             <v-card-actions>
               <v-card-title>
                 Client: {{ dataForJson.clientName }}
@@ -727,6 +727,9 @@
 
               <v-spacer></v-spacer>
 
+              <v-btn outlined color="primary" class="mx-4" text @click="e1 = 1">
+                edit
+              </v-btn>
               <v-btn icon @click="showSummaryClient = !showSummaryClient">
                 <v-icon>{{
                   showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
@@ -735,34 +738,183 @@
             </v-card-actions>
 
             <v-expand-transition>
-              <div v-show="showSummaryClient">
+              <div class="pb-1" v-show="showSummaryClient">
                 <v-divider></v-divider>
+                <v-card class="ma-4" outlined>
+                  <v-row align="center" justify="center">
+                    <div class="modal-title-description ma-6">
+                      <h4>Brands</h4>
+                      <p class="mb-0 grey--text">
+                        {{ dataForJson.brands.join(", ") }}
+                      </p>
+                    </div>
 
-                <v-card>
-                  <v-card-title>Brands</v-card-title>
-                  <v-card-subtitle>{{
-                    dataForJson.brands.join(", ")
-                  }}</v-card-subtitle>
+                    <v-spacer></v-spacer>
+                  </v-row>
                 </v-card>
 
-                <v-card>
-                  <v-card-title>Departments</v-card-title>
-                  <v-card-subtitle>{{
-                    dataForJson.departments.join(", ")
-                  }}</v-card-subtitle>
+                <v-card class="ma-4" outlined>
+                  <v-row align="center" justify="center">
+                    <div class="modal-title-description ma-6">
+                      <h4>Departments</h4>
+                      <p class="mb-0 grey--text">
+                        {{ dataForJson.departments.join(", ") }}
+                      </p>
+                    </div>
+
+                    <v-spacer></v-spacer>
+                  </v-row>
                 </v-card>
 
-                <v-card>
-                  <v-card-title>Markets</v-card-title>
-                  <v-card-subtitle>{{
-                    dataForJson.markets.join(", ")
-                  }}</v-card-subtitle>
+                <v-card class="ma-4" outlined>
+                  <v-row align="center" justify="center">
+                    <div class="modal-title-description ma-6">
+                      <h4>Markets</h4>
+                      <p class="mb-0 grey--text">
+                        {{
+                          dataForJson.markets
+                            .map((entry) => entry.marketCountry)
+                            .join(", ")
+                        }}
+                      </p>
+                    </div>
+
+                    <v-spacer></v-spacer>
+                  </v-row>
                 </v-card>
               </div>
             </v-expand-transition>
           </v-card>
-          <!-- client summary block EINDE -->
-        </v-card>
+
+          <!-- chosen preset block-->
+          <v-card class="my-4">
+            <v-card-actions>
+              <v-card-title> Module- and campaign preset </v-card-title>
+
+              <v-spacer></v-spacer>
+
+              <v-btn outlined color="primary" class="mx-4" text @click="e1 = 2">
+                edit
+              </v-btn>
+              <v-btn icon @click="showSummaryClient = !showSummaryClient">
+                <v-icon>{{
+                  showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
+                }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+
+            <v-expand-transition>
+              <div class="pb-1" v-show="showSummaryClient">
+                <v-divider></v-divider>
+
+                <v-card class="ma-4" outlined>
+                  <v-row class="ma-6">
+                    <v-row>
+                      <div
+                        class="icon ma-2"
+                        :class="dataForJson.preset.iconClass"
+                      ></div>
+                      <div class="modal-title-description my-auto">
+                        <h4>{{ dataForJson.preset.title }}</h4>
+                        <p class="mb-0 grey--text">
+                          {{ currentPresetInfo.subTitle }}
+                        </p>
+                      </div>
+                    </v-row>
+                    <v-spacer></v-spacer>
+                  </v-row>
+                </v-card>
+              </div>
+            </v-expand-transition>
+          </v-card>
+
+          <!-- preset options block-->
+          <v-card class="my-4">
+            <v-card-actions>
+              <v-card-title> Preset options </v-card-title>
+
+              <v-spacer></v-spacer>
+
+              <v-btn outlined color="primary" class="mx-4" text @click="e1 = 3">
+                edit
+              </v-btn>
+              <v-btn icon @click="showSummaryClient = !showSummaryClient">
+                <v-icon>{{
+                  showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
+                }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+
+            <v-expand-transition>
+              <div class="pb-1" v-show="showSummaryClient">
+                <v-divider></v-divider>
+
+                <v-card class="ma-4" outlined>
+                  <v-row align="center" justify="center">
+                    <div class="modal-title-description ma-6">
+                      <h4>Modules</h4>
+                      <p class="mb-0 grey--text">
+                        {{ dataForJson.preset.modules.join(", ") }}
+                      </p>
+                    </div>
+
+                    <v-spacer></v-spacer>
+                  </v-row>
+                </v-card>
+                <v-card class="ma-4" outlined>
+                  <v-row align="center" justify="center">
+                    <div class="modal-title-description ma-6">
+                      <h4>Channels</h4>
+                      <p class="mb-0 grey--text">
+                        {{ dataForJson.preset.channels.join(", ") }}
+                      </p>
+                    </div>
+
+                    <v-spacer></v-spacer>
+                  </v-row>
+                </v-card>
+              </div>
+            </v-expand-transition>
+          </v-card>
+
+          <!-- user types block -->
+          <v-card class="my-4">
+            <v-card-actions>
+              <v-card-title>
+                User types
+              </v-card-title>
+
+              <v-spacer></v-spacer>
+
+              <v-btn outlined color="primary" class="mx-4" text @click="e1 = 4">
+                edit
+              </v-btn>
+              <v-btn icon @click="showSummaryClient = !showSummaryClient">
+                <v-icon>{{
+                  showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
+                }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+
+            <v-expand-transition>
+              <div class="pb-1" v-show="showSummaryClient">
+                <v-divider></v-divider>
+                <v-card v-for="user in dataForJson.userTypes" :key="user" class="ma-4" outlined>
+                  <v-row align="center" justify="center">
+                    <div class="modal-title-description ma-6">
+                      <h4>{{user.userTypename}}</h4>
+                      <p class="mb-0 grey--text">
+                        {{ user.rights.join(", ") }}
+                      </p>
+                    </div>
+
+                    <v-spacer></v-spacer>
+                  </v-row>
+                </v-card>
+              </div>
+            </v-expand-transition>
+          </v-card>
+        </v-container>
       </v-stepper-content>
     </v-stepper-items>
 
@@ -903,10 +1055,15 @@ export default {
       markets: [],
 
       //step2
-      preset: {},
+      preset: {
+        modules: [],
+        channels: []
+      },
 
       //step3
-      userTypes: [],
+      userTypes: [
+        {userTypename: "", rights:[]}
+      ],
     },
 
     //per stap data bijhouden
@@ -1144,7 +1301,7 @@ export default {
   width: 50%;
 }
 
-.containerUsertypes{
+.containerUsertypes {
   width: 55%;
 }
 
