@@ -317,7 +317,7 @@
         </v-container>
       </v-stepper-content>
 
-      <!-- STEP 2: client -->
+      <!-- STEP 2: preset -->
       <v-stepper-content step="2" class="step">
         <v-container class="containerClient" fluid>
           <!-- pagina vraag + omschrijving -->
@@ -330,7 +330,7 @@
           </v-row>
 
           <!--Info dialog BEGIN-->
-          <v-row justify="flex-end">
+          <v-row justify="center">
             <v-dialog
               v-model="dialog"
               fullscreen
@@ -366,20 +366,21 @@
                 <v-tabs-items v-model="tab">
                   <v-tab-item>
                     <v-card flat>
-                      <v-card-title>
-                        Modules
-                      </v-card-title>
+                      <v-card-title> Modules </v-card-title>
                       <v-card-text>
-                        <li v-for="moduleItem in currentPresetInfo.modules" :key="moduleItem">{{ moduleItem }}</li>
-                        </v-card-text>
+                        <li
+                          v-for="moduleItem in currentPresetInfo.modules"
+                          :key="moduleItem"
+                        >
+                          {{ moduleItem }}
+                        </li>
+                      </v-card-text>
                     </v-card>
                   </v-tab-item>
 
                   <v-tab-item>
                     <v-card flat>
-                      <v-card-title>
-                        About
-                      </v-card-title>
+                      <v-card-title> About </v-card-title>
                       <v-card-text>{{ currentPresetInfo.about }}</v-card-text>
                     </v-card>
                   </v-tab-item>
@@ -388,6 +389,7 @@
             </v-dialog>
           </v-row>
           <!--Info dialog EINDE-->
+          <!-- preset radio buttons -->
           <v-radio-group class="ma-0" v-model="dataStep2.preset" column>
             <v-card
               class="ma-4"
@@ -399,6 +401,7 @@
               <v-row class="ma-6">
                 <v-row>
                   <v-radio
+                    @click="chosenPreset(dataForPresets.preset1Data.presetInfo)"
                     color="primary"
                     :value="dataForPresets.preset1Data"
                     class="mb-0"
@@ -444,6 +447,7 @@
                     color="primary"
                     :value="dataForPresets.preset2Data"
                     class="mb-0"
+                    @click="chosenPreset(dataForPresets.preset2Data.presetInfo)"
                   ></v-radio>
 
                   <div
@@ -479,25 +483,235 @@
 
       <!-- STEP 3: presetoptions -->
       <v-stepper-content step="3" class="step">
-        <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
+        <v-container class="containerClient" fluid>
+          <!-- pagina vraag + omschrijving -->
+          <v-row class="mx-6 my-0">
+            <h1>Do you want to edit the preset options?</h1>
+            <p class="grey--text font-weight-medium">
+              Edit the options in the preset or leave it as it is.
+            </p>
+          </v-row>
+
+          <!-- preset choice block -->
+          <v-card class="my-8">
+            <v-card-actions>
+              <v-card-title> Chosen preset </v-card-title>
+
+              <v-spacer></v-spacer>
+
+              <v-btn icon @click="showPreset = !showPreset">
+                <v-icon>{{
+                  !showPreset ? "mdi-chevron-up" : "mdi-chevron-down"
+                }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+
+            <v-expand-transition>
+              <div class="pb-1">
+                <v-divider></v-divider>
+
+                <v-card class="ma-4" outlined>
+                  <v-row class="ma-6">
+                    <v-row>
+                      <div
+                        class="icon ma-2"
+                        :class="dataForJson.preset.iconClass"
+                      ></div>
+                      <div class="modal-title-description my-auto">
+                        <h4>{{ dataForJson.preset.title }}</h4>
+                        <p class="mb-0 grey--text">
+                          {{ currentPresetInfo.subTitle }}
+                        </p>
+                      </div>
+                    </v-row>
+                    <v-spacer></v-spacer>
+                  </v-row>
+                </v-card>
+              </div>
+            </v-expand-transition>
+          </v-card>
+
+          <!-- system modules block-->
+          <v-card class="my-8">
+            <v-card-actions>
+              <v-card-title> System modules </v-card-title>
+
+              <v-spacer></v-spacer>
+
+              <v-btn icon @click="showPreset = !showPreset">
+                <v-icon>{{
+                  !showPreset ? "mdi-chevron-up" : "mdi-chevron-down"
+                }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+
+            <v-expand-transition>
+              <div class="pb-1">
+                <v-divider></v-divider>
+
+                <v-checkbox
+                  v-for="(item, key) in dataForJson.preset.modules"
+                  :key="key"
+                  v-model="dataForJson.preset.modules[key]"
+                  :label="dataForJson.preset.modules[key]"
+                >
+                </v-checkbox>
+                <v-btn class="ma-2" outlined color="primary"
+                  >more options</v-btn
+                >
+              </div>
+            </v-expand-transition>
+          </v-card>
+
+          <!-- channels block-->
+          <v-card class="my-8">
+            <v-card-actions>
+              <v-card-title> Campaign channels </v-card-title>
+
+              <v-spacer></v-spacer>
+
+              <v-btn icon @click="showPreset = !showPreset">
+                <v-icon>{{
+                  !showPreset ? "mdi-chevron-up" : "mdi-chevron-down"
+                }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+
+            <v-expand-transition>
+              <div class="pb-1">
+                <v-divider></v-divider>
+                <v-simple-table>
+                  <thead>
+                    <tr>
+                      <th class="text-left">Channel</th>
+                      <th class="text-left">Create</th>
+                      <th class="text-left">Publish</th>
+                      <th class="text-left">Analytics</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr
+                      v-for="channel in dataForJson.preset.channels"
+                      :key="channel"
+                    >
+                      <td>{{ channel }}</td>
+                      <td>
+                        <v-checkbox
+                          v-model="dataStep4.userTypes"
+                          :value="dataForUserTypes.admin"
+                        ></v-checkbox>
+                      </td>
+                      <td>
+                        <v-checkbox
+                          v-model="dataStep4.userTypes"
+                          :value="dataForUserTypes.admin"
+                        ></v-checkbox>
+                      </td>
+                      <td>
+                        <v-checkbox
+                          v-model="dataStep4.userTypes"
+                          :value="dataForUserTypes.admin"
+                        ></v-checkbox>
+                      </td>
+                    </tr>
+                  </tbody>
+                </v-simple-table>
+              </div>
+            </v-expand-transition>
+          </v-card>
+        </v-container>
       </v-stepper-content>
 
       <!-- STEP 4: user types -->
       <v-stepper-content step="4" class="step">
-        <v-card class="mb-12" color="grey lighten-1">
-          <v-card max-width="50%" class="mx-auto">
-            <v-checkbox
-              v-model="dataStep4.userTypes"
-              label="Admin"
-              :value="dataForUserTypes.admin"
-            ></v-checkbox>
-            <v-checkbox
-              v-model="dataStep4.userTypes"
-              label="Creative"
-              :value="dataForUserTypes.creative"
-            ></v-checkbox>
+        <v-container class="containerUsertypes" fluid>
+          <!-- pagina vraag + omschrijving -->
+          <v-row class="mx-6 my-0">
+            <h1>What user types do you want to use?</h1>
+            <p class="grey--text font-weight-medium">
+              Users have unique rights, allowing the customer to collaborate in
+              their own way.
+            </p>
+          </v-row>
+
+          <v-card class="pa-4 ma-4">
+            <v-row class="ma-2">
+              <v-row>
+                <v-checkbox
+                  class="mt-5 ml-3"
+                  v-model="dataStep4.userTypes"
+                  :value="dataForUserTypes.admin"
+                ></v-checkbox>
+                <img
+                  class="icon-user-type mt-3 mx-3"
+                  src="../assets/userTypesIcons/admin.svg"
+                />
+                <div class="modal-title-description my-auto">
+                  <h4>Admin</h4>
+                  <p class="mb-0 grey--text">
+                    All rights. Manages all teams, users, campaigns.
+                  </p>
+                </div>
+              </v-row>
+              <v-spacer></v-spacer>
+            </v-row>
           </v-card>
-        </v-card>
+
+          <v-card class="pa-4 ma-4">
+            <v-row class="ma-2">
+              <v-row>
+                <v-checkbox
+                  class="mt-5 ml-3"
+                  v-model="dataStep4.userTypes"
+                  :value="dataForUserTypes.manager"
+                ></v-checkbox>
+                <img
+                  class="icon-user-type mt-3 mx-3"
+                  src="../assets/userTypesIcons/manager.svg"
+                />
+                <div class="modal-title-description my-auto">
+                  <h4>Manager</h4>
+                  <p class="mb-0 grey--text">
+                    Creating, managing and launching marketing campaigns with
+                    the right contents.
+                  </p>
+                </div>
+              </v-row>
+              <v-spacer></v-spacer>
+            </v-row>
+          </v-card>
+
+          <v-card class="pa-4 ma-4">
+            <v-row class="ma-2">
+              <v-row>
+                <v-checkbox
+                  class="mt-5 ml-3"
+                  v-model="dataStep4.userTypes"
+                  :value="dataForUserTypes.creative"
+                ></v-checkbox>
+                <img
+                  class="icon-user-type mt-3 mx-3"
+                  src="../assets/userTypesIcons/creative.svg"
+                />
+                <div class="modal-title-description my-auto">
+                  <h4>Creative</h4>
+                  <p class="mb-0 grey--text">
+                    Providing the marketing campaigns with the right designs and
+                    reviewing them before launch.
+                  </p>
+                </div>
+              </v-row>
+              <v-spacer></v-spacer>
+            </v-row>
+          </v-card>
+
+          <v-btn class="ma-2" outlined color="primary">
+            
+            custom
+            <v-icon right> mdi-account </v-icon>
+            </v-btn>
+        </v-container>
       </v-stepper-content>
 
       <!-- STEP 5: summary -->
@@ -671,6 +885,7 @@ export default {
   name: "HelloWorld",
 
   data: () => ({
+    baseURL: "checkBox.svg",
     e1: 1,
     showDetails: true,
     showBrands: false,
@@ -717,12 +932,24 @@ export default {
         modules: ["multiMarket", "templateDesigner"],
         channels: ["social", "email"],
         campaignformatTitle: "BuildCreatives",
+        iconClass: "icon-build-creatives",
         presetInfo: {
           title: "Build Creatives",
           subTitle:
             "Create template based creatives in Cape and download them locally.",
-          modules: ["multiMarket", "templateDesigner", "Accounts analytics", "publish Manager", "Campaign Concepts", "Multi Department", "Multi Market", "Dashboard Notifications","Campaign Planning"],
-          about: "Now they can manage all campaign types, budgets, and creatives in one place. This includes validation checks and the ability to publish campaigns to the right audience at the platform of choice, and all the necessary campaign build-up, targeting and naming conventions. Expedia needs a way to orchestrate their retail media services by collecting information from their advertisers."  
+          modules: [
+            "multiMarket",
+            "templateDesigner",
+            "Accounts analytics",
+            "publish Manager",
+            "Campaign Concepts",
+            "Multi Department",
+            "Multi Market",
+            "Dashboard Notifications",
+            "Campaign Planning",
+          ],
+          about:
+            "Now they can manage all campaign types, budgets, and creatives in one place. This includes validation checks and the ability to publish campaigns to the right audience at the platform of choice, and all the necessary campaign build-up, targeting and naming conventions. Expedia needs a way to orchestrate their retail media services by collecting information from their advertisers.",
         },
       },
 
@@ -731,12 +958,24 @@ export default {
         modules: ["multiMarket", "templateDesigner"],
         channels: ["landingspage", "radio"],
         campaignformatTitle: "Publish campaigns",
+        iconClass: "icon-publish-campaigns",
         presetInfo: {
           title: "Publish campaigns",
           subTitle:
             "Create template based creatives and publish to ad platforms.",
-          modules: ["multiMarket", "templateDesigner", "Accounts analytics", "publish Manager", "Campaign Concepts", "Multi Department", "Multi Market", "Dashboard Notifications","Campaign Planning"],
-          about: "Now they can manage all campaign types, budgets, and creatives in one place. This includes validation checks and the ability to publish campaigns to the right audience at the platform of choice, and all the necessary campaign build-up, targeting and naming conventions. Expedia needs a way to orchestrate their retail media services by collecting information from their advertisers."  
+          modules: [
+            "multiMarket",
+            "templateDesigner",
+            "Accounts analytics",
+            "publish Manager",
+            "Campaign Concepts",
+            "Multi Department",
+            "Multi Market",
+            "Dashboard Notifications",
+            "Campaign Planning",
+          ],
+          about:
+            "Now they can manage all campaign types, budgets, and creatives in one place. This includes validation checks and the ability to publish campaigns to the right audience at the platform of choice, and all the necessary campaign build-up, targeting and naming conventions. Expedia needs a way to orchestrate their retail media services by collecting information from their advertisers.",
         },
       },
     },
@@ -749,7 +988,7 @@ export default {
       campaignformatTitle: "",
     },
 
-    //dat voor info presets TABS
+    //data voor info presets TABS
     tab: null,
     items: ["content", "info"],
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -778,11 +1017,18 @@ export default {
         userTypename: "admin",
         rights: ["full acces", "collaborate"],
       },
+      manager: {
+        userTypename: "manager",
+        rights: ["managing teams", "collaborate"],
+      },
       creative: {
         userTypename: "creative",
-        rights: ["full acces", "collaborate"],
+        rights: ["full acces", "collaborate", "making creatives"],
       },
     },
+
+    //data voor preset options
+    showPreset: true,
   }),
   methods: {
     addBrandsTextfield() {
@@ -825,6 +1071,9 @@ export default {
 
     presetInfo(CurrentPresetInfoParam) {
       this.dialog = true;
+      this.currentPresetInfo = CurrentPresetInfoParam;
+    },
+    chosenPreset(CurrentPresetInfoParam) {
       this.currentPresetInfo = CurrentPresetInfoParam;
     },
 
@@ -895,6 +1144,10 @@ export default {
   width: 50%;
 }
 
+.containerUsertypes{
+  width: 55%;
+}
+
 .active {
   border: 2px solid #2b81d6;
 }
@@ -929,6 +1182,11 @@ export default {
   background-size: cover;
 }
 
+.icon-user-type {
+  width: 48px;
+  height: 48px;
+}
+
 .icon-build-creatives {
   background-image: url(../assets/presetIcons/buildCreatives.svg);
 }
@@ -946,8 +1204,8 @@ export default {
 }
 
 .v-dialog:not(.v-dialog--fullscreen) {
-    bottom: 0 !important;
-    right: 0 !important;
-    position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  position: absolute !important;
 }
 </style>
