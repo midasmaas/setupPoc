@@ -320,8 +320,17 @@
       <!-- STEP 2: client -->
       <v-stepper-content step="2" class="step">
         <v-container class="containerClient" fluid>
+          <!-- pagina vraag + omschrijving -->
+          <v-row class="mx-6 my-0">
+            <h1>What’s the main goal of the client?</h1>
+            <p class="grey--text font-weight-medium">
+              Start off with a predefined, goal based setup, campaign channels
+              and a campaign format.
+            </p>
+          </v-row>
+
           <!--Info dialog BEGIN-->
-          <v-row justify="center">
+          <v-row justify="flex-end">
             <v-dialog
               v-model="dialog"
               fullscreen
@@ -330,98 +339,87 @@
             >
               <v-card>
                 <v-toolbar class="height-modal-toolbar">
-                  
                   <div class="modal-title-description">
-                  <v-toolbar-title>{{
-                    currentPresetInfo.title
-                  }}</v-toolbar-title>
-                  
-                  <h3>{{currentPresetInfo.subTitle}}</h3>
+                    <v-toolbar-title>{{
+                      currentPresetInfo.title
+                    }}</v-toolbar-title>
+
+                    <p class="grey--text font-weight-medium pa-0 ma-0">
+                      {{ currentPresetInfo.subTitle }}
+                    </p>
                   </div>
 
-                  
                   <v-spacer></v-spacer>
                   <v-btn icon @click="dialog = false">
                     <v-icon>mdi-close</v-icon>
                   </v-btn>
-                  
                 </v-toolbar>
-                <v-list three-line subheader>
-                  <v-subheader>User Controls</v-subheader>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>Content filtering</v-list-item-title>
-                      <v-list-item-subtitle
-                        >Set the content filtering level to restrict apps that
-                        can be downloaded</v-list-item-subtitle
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>Password</v-list-item-title>
-                      <v-list-item-subtitle
-                        >Require password for purchase or use password to
-                        restrict purchase</v-list-item-subtitle
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-                <v-divider></v-divider>
-                <v-list three-line subheader>
-                  <v-subheader>General</v-subheader>
-                  <v-list-item>
-                    <v-list-item-action>
-                      <v-checkbox v-model="notifications"></v-checkbox>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title>Notifications</v-list-item-title>
-                      <v-list-item-subtitle
-                        >Notify me about updates to apps or games that I
-                        downloaded</v-list-item-subtitle
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-action>
-                      <v-checkbox v-model="sound"></v-checkbox>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title>Sound</v-list-item-title>
-                      <v-list-item-subtitle
-                        >Auto-update apps at any time. Data charges may
-                        apply</v-list-item-subtitle
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-action>
-                      <v-checkbox v-model="widgets"></v-checkbox>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title>Auto-add widgets</v-list-item-title>
-                      <v-list-item-subtitle
-                        >Automatically add home screen
-                        widgets</v-list-item-subtitle
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
+
+                <v-tabs class="pt-1" v-model="tab">
+                  <v-tabs-slider color="primary"></v-tabs-slider>
+
+                  <v-tab v-for="item in items" :key="item">
+                    {{ item }}
+                  </v-tab>
+                </v-tabs>
+
+                <v-tabs-items v-model="tab">
+                  <v-tab-item>
+                    <v-card flat>
+                      <v-card-title>
+                        Modules
+                      </v-card-title>
+                      <v-card-text>
+                        <li v-for="moduleItem in currentPresetInfo.modules" :key="moduleItem">{{ moduleItem }}</li>
+                        </v-card-text>
+                    </v-card>
+                  </v-tab-item>
+
+                  <v-tab-item>
+                    <v-card flat>
+                      <v-card-title>
+                        About
+                      </v-card-title>
+                      <v-card-text>{{ currentPresetInfo.about }}</v-card-text>
+                    </v-card>
+                  </v-tab-item>
+                </v-tabs-items>
               </v-card>
             </v-dialog>
           </v-row>
           <!--Info dialog EINDE-->
-          <v-radio-group v-model="dataStep2.preset" column>
-            <v-card class="ma-4">
+          <v-radio-group class="ma-0" v-model="dataStep2.preset" column>
+            <v-card
+              class="ma-4"
+              :class="{
+                'active-preset':
+                  dataStep2.preset === dataForPresets.preset1Data,
+              }"
+            >
               <v-row class="ma-6">
-                <v-radio
-                  active-class="active"
-                  label="Build Creatives"
-                  color="red"
-                  :value="dataForPresets.preset1Data"
-                  class="mb-0"
-                >
-                </v-radio>
+                <v-row>
+                  <v-radio
+                    color="primary"
+                    :value="dataForPresets.preset1Data"
+                    class="mb-0"
+                  >
+                  </v-radio>
+                  <div
+                    class="icon icon-build-creatives ma-2"
+                    :class="{
+                      'icon-build-creatives-focus':
+                        dataStep2.preset === dataForPresets.preset1Data,
+                      'icon-build-creatives':
+                        dataStep2.preset !== dataForPresets.preset1Data,
+                    }"
+                  ></div>
+                  <div class="modal-title-description my-auto">
+                    <h4>{{ dataForPresets.preset1Data.title }}</h4>
+                    <p class="mb-0 grey--text">
+                      {{ dataForPresets.preset1Data.presetInfo.subTitle }}
+                    </p>
+                  </div>
+                </v-row>
                 <v-spacer></v-spacer>
                 <v-btn
                   color="primary"
@@ -433,17 +431,46 @@
                 </v-btn>
               </v-row>
             </v-card>
-            <v-card class="ma-4">
+            <v-card
+              class="ma-4"
+              :class="{
+                'active-preset':
+                  dataStep2.preset === dataForPresets.preset2Data,
+              }"
+            >
               <v-row class="ma-6">
-                <v-radio
-                  active-class="active"
-                  label="Publish campaigns"
-                  color="red darken-3"
-                  :value="dataForPresets.preset2Data"
-                  class="mb-0"
-                ></v-radio>
+                <v-row>
+                  <v-radio
+                    color="primary"
+                    :value="dataForPresets.preset2Data"
+                    class="mb-0"
+                  ></v-radio>
+
+                  <div
+                    class="icon icon-build-creatives ma-2"
+                    :class="{
+                      'icon-publish-campaigns-focus':
+                        dataStep2.preset === dataForPresets.preset2Data,
+                      'icon-publish-campaigns':
+                        dataStep2.preset !== dataForPresets.preset2Data,
+                    }"
+                  ></div>
+                  <div class="modal-title-description my-auto">
+                    <h4>{{ dataForPresets.preset2Data.title }}</h4>
+                    <p class="mb-0 grey--text">
+                      {{ dataForPresets.preset2Data.presetInfo.subTitle }}
+                    </p>
+                  </div>
+                </v-row>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" class="mx-4" text> info </v-btn>
+                <v-btn
+                  color="primary"
+                  class="mx-4"
+                  text
+                  @click="presetInfo(dataForPresets.preset2Data.presetInfo)"
+                >
+                  info
+                </v-btn>
               </v-row>
             </v-card>
           </v-radio-group>
@@ -692,7 +719,10 @@ export default {
         campaignformatTitle: "BuildCreatives",
         presetInfo: {
           title: "Build Creatives",
-          subTitle: "Create template based creatives in Cape and download them locally."
+          subTitle:
+            "Create template based creatives in Cape and download them locally.",
+          modules: ["multiMarket", "templateDesigner", "Accounts analytics", "publish Manager", "Campaign Concepts", "Multi Department", "Multi Market", "Dashboard Notifications","Campaign Planning"],
+          about: "Now they can manage all campaign types, budgets, and creatives in one place. This includes validation checks and the ability to publish campaigns to the right audience at the platform of choice, and all the necessary campaign build-up, targeting and naming conventions. Expedia needs a way to orchestrate their retail media services by collecting information from their advertisers."  
         },
       },
 
@@ -703,7 +733,10 @@ export default {
         campaignformatTitle: "Publish campaigns",
         presetInfo: {
           title: "Publish campaigns",
-          subTitle: "Create template based creatives and publish to ad platforms."
+          subTitle:
+            "Create template based creatives and publish to ad platforms.",
+          modules: ["multiMarket", "templateDesigner", "Accounts analytics", "publish Manager", "Campaign Concepts", "Multi Department", "Multi Market", "Dashboard Notifications","Campaign Planning"],
+          about: "Now they can manage all campaign types, budgets, and creatives in one place. This includes validation checks and the ability to publish campaigns to the right audience at the platform of choice, and all the necessary campaign build-up, targeting and naming conventions. Expedia needs a way to orchestrate their retail media services by collecting information from their advertisers."  
         },
       },
     },
@@ -715,6 +748,11 @@ export default {
       channels: [],
       campaignformatTitle: "",
     },
+
+    //dat voor info presets TABS
+    tab: null,
+    items: ["content", "info"],
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
     // data voor markets
     chosenMarkets: null,
@@ -861,8 +899,55 @@ export default {
   border: 2px solid #2b81d6;
 }
 
+.active-preset {
+  border: 2px solid #2b81d6;
+  background-color: #f6f9fe !important;
+}
+
+.active-preset .svg {
+  fill: #2b81d6;
+}
+
 .modal-title-description {
   display: flex;
   flex-direction: column;
+}
+
+.height-modal-toolbar {
+  height: fit-content;
+}
+
+.svg {
+  color: #2b81d6;
+}
+
+/*svg aanpassen wanneer preset geselecteerd*/
+.icon {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-size: cover;
+}
+
+.icon-build-creatives {
+  background-image: url(../assets/presetIcons/buildCreatives.svg);
+}
+
+.icon-build-creatives-focus {
+  background-image: url(../assets/presetIcons/buildCreativesFocus.svg);
+}
+
+.icon-publish-campaigns {
+  background-image: url(../assets/presetIcons/publishCampaigns.svg);
+}
+
+.icon-publish-campaigns-focus {
+  background-image: url(../assets/presetIcons/publishCampaignsFocus.svg);
+}
+
+.v-dialog:not(.v-dialog--fullscreen) {
+    bottom: 0 !important;
+    right: 0 !important;
+    position: absolute !important;
 }
 </style>
