@@ -880,9 +880,7 @@
           <!-- user types block -->
           <v-card class="my-4">
             <v-card-actions>
-              <v-card-title>
-                User types
-              </v-card-title>
+              <v-card-title> User types </v-card-title>
 
               <v-spacer></v-spacer>
 
@@ -899,10 +897,15 @@
             <v-expand-transition>
               <div class="pb-1" v-show="showSummaryClient">
                 <v-divider></v-divider>
-                <v-card v-for="(user, key) in dataForJson.userTypes" :key="key" class="ma-4" outlined>
+                <v-card
+                  v-for="(user, key) in dataForJson.userTypes"
+                  :key="key"
+                  class="ma-4"
+                  outlined
+                >
                   <v-row align="center" justify="center">
                     <div class="modal-title-description ma-6">
-                      <h4>{{user.userTypename}}</h4>
+                      <h4>{{ user.userTypename }}</h4>
                       <p class="mb-0 grey--text">
                         {{ user.rights.join(", ") }}
                       </p>
@@ -1033,6 +1036,8 @@
 </template>
 
 <script>
+import JSZip from "jszip";
+import FileSaver from "file-saver";
 export default {
   name: "HelloWorld",
 
@@ -1057,13 +1062,11 @@ export default {
       //step2
       preset: {
         modules: [],
-        channels: []
+        channels: [],
       },
 
       //step3
-      userTypes: [
-        {userTypename: "", rights:[]}
-      ],
+      userTypes: [{ userTypename: "", rights: [] }],
     },
 
     //per stap data bijhouden
@@ -1263,14 +1266,26 @@ export default {
     },
 
     downloadZIPTEST() {
-      let multipleJSON = [this.dataForJson, this.dataStep1]
-      multipleJSON.forEach(element => {
-        "data:text/json;charset=utf-8," + encodeURIComponent(element);
-        console.log("Bestand is: " + element)
-      });
       
+      let zip = new JSZip();
+      this.dataStep1.markets.forEach((element, i) => {
+        let singleJSON =
+          JSON.stringify(element, null, 2);
+          let name = element.marketCountry + '.json'
+          zip.file(name, singleJSON);
+      });
+      zip.file('setupFile.json', JSON.stringify(this.dataForJson, null, 2))
+      zip.file('campaignSetup.json', JSON.stringify(this.dataStep2, null, 2))
+      
+
+      zip.generateAsync({
+          type: "blob",
+        })
+        .then(function (blob) {
+          // see FileSaver.js
+          saveAs(blob, "setup.zip");
+        });
     },
-    
   },
 };
 </script>
