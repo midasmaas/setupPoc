@@ -19,7 +19,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -30,7 +30,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Story's</v-list-item-title>
+            <v-list-item-title>Clients</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -41,7 +41,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Add story</v-list-item-title>
+            <v-list-item-title>Add new environment</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         </v-list>

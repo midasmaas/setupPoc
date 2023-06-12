@@ -358,7 +358,7 @@
                 <v-tabs class="pt-1" v-model="tab">
                   <v-tabs-slider color="primary"></v-tabs-slider>
 
-                  <v-tab v-for="item in items" :key="item">
+                  <v-tab v-for="(item, key) in items" :key="key">
                     {{ item }}
                   </v-tab>
                 </v-tabs>
@@ -369,8 +369,8 @@
                       <v-card-title> Modules </v-card-title>
                       <v-card-text>
                         <li
-                          v-for="moduleItem in currentPresetInfo.modules"
-                          :key="moduleItem"
+                          v-for="(moduleItem, key) in currentPresetInfo.modules"
+                          :key="key"
                         >
                           {{ moduleItem }}
                         </li>
@@ -592,8 +592,8 @@
 
                   <tbody>
                     <tr
-                      v-for="channel in dataForJson.preset.channels"
-                      :key="channel"
+                      v-for="(channel, key) in dataForJson.preset.channels"
+                      :key="key"
                     >
                       <td>{{ channel }}</td>
                       <td>
@@ -899,7 +899,7 @@
             <v-expand-transition>
               <div class="pb-1" v-show="showSummaryClient">
                 <v-divider></v-divider>
-                <v-card v-for="user in dataForJson.userTypes" :key="user" class="ma-4" outlined>
+                <v-card v-for="(user, key) in dataForJson.userTypes" :key="key" class="ma-4" outlined>
                   <v-row align="center" justify="center">
                     <div class="modal-title-description ma-6">
                       <h4>{{user.userTypename}}</h4>
@@ -1022,7 +1022,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn class="mx-6" color="primary" @click="downloadJSON">
+        <v-btn class="mx-6" color="primary" @click="downloadZIPTEST">
           Launch environment
         </v-btn>
       </v-row>
@@ -1261,6 +1261,16 @@ export default {
     consoleBrand(toLog) {
       console.log(toLog);
     },
+
+    downloadZIPTEST() {
+      let multipleJSON = [this.dataForJson, this.dataStep1]
+      multipleJSON.forEach(element => {
+        "data:text/json;charset=utf-8," + encodeURIComponent(element);
+        console.log("Bestand is: " + element)
+      });
+      
+    },
+    
   },
 };
 </script>
