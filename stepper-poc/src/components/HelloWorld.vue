@@ -263,13 +263,14 @@
                   <v-row align="center" justify="center">
                     <v-autocomplete
                       v-model="dataStep1.markets[key].marketCountry"
-                      :items="dataForMarkets.marketNames"
+                      :items="returnCountries()"
                       class="shrink pt-8 mx-6"
                       @change="
                         dataForLanguages(
                           dataStep1.markets[key].marketCountry,
                           key
-                        )
+                        ),
+                          returnCountries()
                       "
                     ></v-autocomplete>
 
@@ -1050,6 +1051,11 @@ export default {
     showMarkets: false,
     test: [],
     showSummaryClient: false,
+
+    //testdataSeperateJSONS
+    dataForSetup: {},
+    dataForCampaignFormat: {},
+
     dataForJson: {
       //step1
       clientName: "",
@@ -1089,7 +1095,26 @@ export default {
     dataForPresets: {
       preset1Data: {
         title: "Build Creatives",
-        modules: ["multiMarket", "templateDesigner"],
+        modules: [
+          "notifications",
+          "campaignPlanning",
+          "conceptManagement",
+          "reporting",
+          "translateAuto",
+          "campaignConcepts",
+          "conceptGallery",
+          "campaignChat",
+          "supportChat",
+          "helpdesk",
+          "translateAuto",
+          "feedManagement",
+          "assetLibrary",
+          "assetsUnsplash",
+          "subAccounts",
+          "brandManagement",
+          "lookupManagement",
+          "tour",
+        ],
         channels: ["social", "email"],
         campaignformatTitle: "BuildCreatives",
         iconClass: "icon-build-creatives",
@@ -1098,15 +1123,23 @@ export default {
           subTitle:
             "Create template based creatives in Cape and download them locally.",
           modules: [
-            "multiMarket",
-            "templateDesigner",
-            "Accounts analytics",
-            "publish Manager",
-            "Campaign Concepts",
-            "Multi Department",
-            "Multi Market",
-            "Dashboard Notifications",
-            "Campaign Planning",
+            "notifications",
+            "campaignPlanning",
+            "conceptManagement",
+            "reporting",
+            "translateAuto",
+            "campaignConcepts",
+            "conceptGallery",
+            "campaignChat",
+            "supportChat",
+            "helpdesk",
+            "translateAuto",
+            "feedManagement",
+            "assetLibrary",
+            "assetsUnsplash",
+            "subAccounts",
+            "brandManagement",
+            "lookupManagement",
           ],
           about:
             "Now they can manage all campaign types, budgets, and creatives in one place. This includes validation checks and the ability to publish campaigns to the right audience at the platform of choice, and all the necessary campaign build-up, targeting and naming conventions. Expedia needs a way to orchestrate their retail media services by collecting information from their advertisers.",
@@ -1154,9 +1187,8 @@ export default {
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
     // data voor markets
-    chosenMarkets: null,
     dataForMarkets: {
-      marketNames: ["Belgie", "Nederland", "Duitsland"],
+      marketNames: [{ BE: "Belgie" }, { NL: "Nederland" }, { DE: "Duitsland" }],
       marketLanguages: {
         Belgie: ["DU", "GE", "FR"],
         Nederland: ["PL", "DU"],
@@ -1191,6 +1223,12 @@ export default {
     showPreset: true,
   }),
   methods: {
+    returnCountries() {
+      return this.dataForMarkets.marketNames.map((market) => {
+        const marketKey = Object.keys(market)[0];
+        return market[marketKey];
+      });
+    },
     addBrandsTextfield() {
       this.showBrands = true;
       this.dataStep1.brands.push("");
@@ -1204,7 +1242,6 @@ export default {
     addMarketsTextfield() {
       this.showMarkets = true;
       this.dataStep1.markets.push({ marketCountry: "", marketLanguages: [] });
-      console.log(this.dataStep1);
     },
     dataForLanguages(market, key) {
       let autoCompleteLanguages = this.dataForMarkets.marketLanguages[market];
@@ -1217,7 +1254,38 @@ export default {
         ...this.dataForJson,
         ...this.dataStep1,
       };
-      console.log(this.dataForJson);
+
+      const marketData = this.dataStep1.markets.map((element) => {
+       return this.dataForMarkets.marketNames.find((marketName) => {const marketKey = Object.keys(marketName)[0];
+        const name =  marketName[marketKey]; 
+        return element.marketCountry === name});
+      } 
+      )
+      
+      const brandData = this.dataStep1.brands.reduce((all, element) => {
+        all[element] = element;
+        return all;
+      }, {})
+
+      
+
+      console.log(brandData)
+
+      this.dataForSetup = {
+        ...this.dataForSetup,
+        clientName: this.dataStep1.clientName,
+        environmentLink: this.dataStep1.environmentLink,
+        contactCompany: this.dataStep1.contactCompany,
+        brands: brandData,
+        departments: this.dataStep1.departments,
+        /*markets: this.dataStep1.markets.map((market) => market.marketCountry),*/
+        markets: marketData
+      };
+
+      
+      
+
+      console.log(this.dataForSetup);
     },
 
     addDataStep2() {
@@ -1226,7 +1294,18 @@ export default {
         ...this.dataForJson,
         ...this.dataStep2,
       };
-      console.log(this.dataForJson);
+
+      this.dataForSetup = {
+        ...this.dataForSetup,
+        ...this.dataStep2,
+      };
+
+      this.dataForCampaignFormat = {
+        ...this.dataForCampaignFormat,
+        ...this.dataStep2,
+      };
+
+      console.log(this.dataForSetup);
     },
 
     presetInfo(CurrentPresetInfoParam) {
@@ -1243,9 +1322,13 @@ export default {
         ...this.dataForJson,
         ...this.dataStep4,
       };
-      console.log(this.dataForJson);
+      this.dataForSetup = {
+        ...this.dataForSetup,
+        ...this.dataStep4,
+      };
+      console.log(this.dataForSetup);
     },
-
+    /*
     downloadJSON() {
       let objectToJSON = JSON.stringify(this.dataForJson, null, 2);
       let JSONForDownload =
@@ -1261,28 +1344,27 @@ export default {
       );
       invissibleButton.click();
     },
-    consoleBrand(toLog) {
-      console.log(toLog);
-    },
-
+    */
     downloadZIPTEST() {
-      
       let zip = new JSZip();
-      this.dataStep1.markets.forEach((element, i) => {
-        let singleJSON =
-          JSON.stringify(element, null, 2);
-          let name = element.marketCountry + '.json'
-          zip.file(name, singleJSON);
-      });
-      zip.file('setupFile.json', JSON.stringify(this.dataForJson, null, 2))
-      zip.file('campaignSetup.json', JSON.stringify(this.dataStep2, null, 2))
-      
 
-      zip.generateAsync({
+      this.dataStep1.markets.forEach((element, i) => {
+        let singleJSON = JSON.stringify(element, null, 2);
+        let name = element.marketCountry + ".json";
+        zip.file(name, singleJSON);
+      });
+      zip.file("setupFile.json", JSON.stringify(this.dataForSetup, null, 2));
+      zip.file(
+        "campaignSetup.json",
+        JSON.stringify(this.dataForCampaignFormat, null, 2)
+      );
+
+      zip
+        .generateAsync({
           type: "blob",
         })
         .then(function (blob) {
-          // see FileSaver.js
+          // zie FileSaver.js
           saveAs(blob, "setup.zip");
         });
     },
