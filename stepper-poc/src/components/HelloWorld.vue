@@ -40,60 +40,9 @@
             </p>
           </v-row>
 
-          <!-- details block BEGIN
-          <v-card class="mt-3 mb-4">
-            <v-card-actions>
-              <v-card-title> Details </v-card-title>
-
-              <v-spacer></v-spacer>
-
-              <v-btn icon @click="showDetails = !showDetails">
-                <v-icon>{{
-                  showDetails ? "mdi-chevron-up" : "mdi-chevron-down"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div v-show="showDetails">
-                <v-divider></v-divider>
-                <v-row class="px-8">
-                  <v-col cols="3">
-                    <img src="../assets/logoPlaceholder.svg" />
-                  </v-col>
-
-                  <v-col cols="9" class="py-8">
-                    <v-text-field
-                      label="Client name"
-                      placeholder="Client name"
-                      outlined
-                      v-model="dataStep1.clientName"
-                    >
-                    </v-text-field>
-
-                    <v-text-field
-                      label="Environment link"
-                      placeholder="Link will appear when name is set"
-                      outlined
-                      v-model="dataStep1.environmentLink"
-                    >
-                    </v-text-field>
-
-                    <v-text-field
-                      label="Main company contact"
-                      placeholder="example@company.com"
-                      outlined
-                      v-model="dataStep1.contactCompany"
-                    >
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-              </div>
-            </v-expand-transition>
-          </v-card>
-          details block EINDE -->
-
+          <!-- details block BEGIN -->
           <clientdetails :dataForDetails="dataStep1"></clientdetails>
+          <!-- details block EINDE -->
 
           <!-- step sub title-->
           <h3 class="mx-1 my-6">Organisational structure</h3>
@@ -101,7 +50,6 @@
           <!-- Brands block BEGIN -->
           <client-brands :dataForBrands="dataStep1"> </client-brands>
           <!-- Brands block EINDE -->
-
           
           <!-- Departments block BEGIN -->
           <client-departments :dataForDepartments="dataStep1"></client-departments>
@@ -216,7 +164,7 @@
             </p>
           </v-row>
 
-          <!--Info dialog BEGIN-->
+          <!--Info dialog BEGIN
           <v-row justify="center">
             <v-dialog
               v-model="dialog"
@@ -275,8 +223,8 @@
               </v-card>
             </v-dialog>
           </v-row>
-          <!--Info dialog EINDE-->
-          <!-- preset radio buttons -->
+          Info dialog EINDE-->
+          <!-- preset radio buttons
           <v-radio-group class="ma-0" v-model="dataStep2.preset" column>
             <v-card
               class="ma-4"
@@ -365,6 +313,10 @@
               </v-row>
             </v-card>
           </v-radio-group>
+
+          -->
+
+          <module-preset-preset-selectie v-on:changeCurrentPresetInModdule="updataCurrentPreset($event)" :currentPresetForModule="currentPresetInfo" :presetDataForModule="dataForPresets" :dataStep2ForModule="dataStep2"> </module-preset-preset-selectie>
         </v-container>
       </v-stepper-content>
 
@@ -925,9 +877,13 @@
 <script>
 
 //componenten
+//step1
 import Clientdetails from "../components/Clientdetails.vue"
 import ClientDepartments from "../components/ClientDepartments.vue"
 import ClientBrands from "../components/ClientBrands.vue"
+
+//step2
+import ModulePresetPresetSelectie from "../components/ModulePresetPresetSelectie.vue"
 
 //library voor het maken van ZIP-mapjes. Zie: JSZIP
 import JSZip from "jszip";
@@ -943,7 +899,7 @@ import userTypeDataFromJSFile from '../data/userTypesDataFile'
 
 export default {
   
-  components: { Clientdetails, ClientDepartments, ClientBrands },
+  components: { Clientdetails, ClientDepartments, ClientBrands, ModulePresetPresetSelectie },
   name: "HelloWorld",
 
   data: () => ({
@@ -1023,6 +979,10 @@ export default {
     
   }),
   methods: {
+    updataCurrentPreset:function(updateCurrentPresetInfo){
+      this.currentPresetInfo = updateCurrentPresetInfo
+    },
+
     // add methodes pushen lege strings naar data voor front-end, zodat in de HTML lege text-boxes verschijnen
     addBrandsTextfield() {
       this.showBrands = true;
