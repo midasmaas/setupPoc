@@ -499,16 +499,16 @@
               <v-card-title> Chosen preset </v-card-title>
 
               <v-spacer></v-spacer>
-
+                
               <v-btn icon @click="showPreset = !showPreset">
                 <v-icon>{{
-                  !showPreset ? "mdi-chevron-up" : "mdi-chevron-down"
+                  !showPreset ? "mdi-chevron-down" : "mdi-chevron-up"
                 }}</v-icon>
               </v-btn>
             </v-card-actions>
 
             <v-expand-transition>
-              <div class="pb-1">
+              <div class="pb-1" v-show="showPreset">
                 <v-divider></v-divider>
 
                 <v-card class="ma-4" outlined>
@@ -516,10 +516,10 @@
                     <v-row>
                       <div
                         class="icon ma-2"
-                        :class="dataForJson.preset.iconClass"
+                        :class="dataForFrontEnd.preset.iconClass"
                       ></div>
                       <div class="modal-title-description my-auto">
-                        <h4>{{ dataForJson.preset.title }}</h4>
+                        <h4>{{ dataForFrontEnd.preset.title }}</h4>
                         <p class="mb-0 grey--text">
                           {{ currentPresetInfo.subTitle }}
                         </p>
@@ -539,22 +539,22 @@
 
               <v-spacer></v-spacer>
 
-              <v-btn icon @click="showPreset = !showPreset">
+              <v-btn icon @click="showModules = !showModules">
                 <v-icon>{{
-                  !showPreset ? "mdi-chevron-up" : "mdi-chevron-down"
+                  !showModules ?  "mdi-chevron-down" : "mdi-chevron-up"
                 }}</v-icon>
               </v-btn>
             </v-card-actions>
 
             <v-expand-transition>
-              <div class="pb-1">
+              <div class="pb-1" v-show="showModules">
                 <v-divider></v-divider>
 
                 <v-checkbox
-                  v-for="(item, key) in dataForJson.preset.modules"
+                  v-for="(item, key) in dataForFrontEnd.preset.modules"
                   :key="key"
-                  v-model="dataForJson.preset.modules[key]"
-                  :label="dataForJson.preset.modules[key]"
+                  v-model="dataForFrontEnd.preset.modules[key]"
+                  :label="dataForFrontEnd.preset.modules[key]"
                 >
                 </v-checkbox>
                 <v-btn class="ma-2" outlined color="primary"
@@ -571,15 +571,15 @@
 
               <v-spacer></v-spacer>
 
-              <v-btn icon @click="showPreset = !showPreset">
+              <v-btn icon @click="showCampaignChannels = !showCampaignChannels">
                 <v-icon>{{
-                  !showPreset ? "mdi-chevron-up" : "mdi-chevron-down"
+                  !showCampaignChannels ? "mdi-chevron-down" : "mdi-chevron-up"
                 }}</v-icon>
               </v-btn>
             </v-card-actions>
 
             <v-expand-transition>
-              <div class="pb-1">
+              <div class="pb-1" v-show="showCampaignChannels">
                 <v-divider></v-divider>
                 <v-simple-table>
                   <thead>
@@ -593,7 +593,7 @@
 
                   <tbody>
                     <tr
-                      v-for="(channel, key) in dataForJson.preset.channels"
+                      v-for="(channel, key) in dataForFrontEnd.preset.channels"
                       :key="key"
                     >
                       <td>{{ channel }}</td>
@@ -723,7 +723,7 @@
           <v-card class="my-4">
             <v-card-actions>
               <v-card-title>
-                Client: {{ dataForJson.clientName }}
+                Client: {{ dataForFrontEnd.clientName }}
               </v-card-title>
 
               <v-spacer></v-spacer>
@@ -746,7 +746,7 @@
                     <div class="modal-title-description ma-6">
                       <h4>Brands</h4>
                       <p class="mb-0 grey--text">
-                        {{ dataForJson.brands.join(", ") }}
+                        {{ dataForFrontEnd.brands.join(", ") }}
                       </p>
                     </div>
 
@@ -759,7 +759,7 @@
                     <div class="modal-title-description ma-6">
                       <h4>Departments</h4>
                       <p class="mb-0 grey--text">
-                        {{ dataForJson.departments.join(", ") }}
+                        {{ dataForFrontEnd.departments.join(", ") }}
                       </p>
                     </div>
 
@@ -773,7 +773,7 @@
                       <h4>Markets</h4>
                       <p class="mb-0 grey--text">
                         {{
-                          dataForJson.markets
+                          dataForFrontEnd.markets
                             .map((entry) => entry.marketCountry)
                             .join(", ")
                         }}
@@ -813,10 +813,10 @@
                     <v-row>
                       <div
                         class="icon ma-2"
-                        :class="dataForJson.preset.iconClass"
+                        :class="dataForFrontEnd.preset.iconClass"
                       ></div>
                       <div class="modal-title-description my-auto">
-                        <h4>{{ dataForJson.preset.title }}</h4>
+                        <h4>{{ dataForFrontEnd.preset.title }}</h4>
                         <p class="mb-0 grey--text">
                           {{ currentPresetInfo.subTitle }}
                         </p>
@@ -855,7 +855,7 @@
                     <div class="modal-title-description ma-6">
                       <h4>Modules</h4>
                       <p class="mb-0 grey--text">
-                        {{ dataForJson.preset.modules.join(", ") }}
+                        {{ dataForFrontEnd.preset.modules.join(", ") }}
                       </p>
                     </div>
 
@@ -867,7 +867,7 @@
                     <div class="modal-title-description ma-6">
                       <h4>Channels</h4>
                       <p class="mb-0 grey--text">
-                        {{ dataForJson.preset.channels.join(", ") }}
+                        {{ dataForFrontEnd.preset.channels.join(", ") }}
                       </p>
                     </div>
 
@@ -899,7 +899,7 @@
               <div class="pb-1" v-show="showSummaryClient">
                 <v-divider></v-divider>
                 <v-card
-                  v-for="(user, key) in dataForJson.userTypes"
+                  v-for="(user, key) in dataForFrontEnd.userTypes"
                   :key="key"
                   class="ma-4"
                   outlined
@@ -935,9 +935,9 @@
 
         <h3
           class="grey--text font-weight-medium"
-          v-show="dataForJson.clientName"
+          v-show="dataForFrontEnd.clientName"
         >
-          New Client: {{ dataForJson.clientName }}
+          New Client: {{ dataForFrontEnd.clientName }}
         </h3>
 
         <v-spacer></v-spacer>
@@ -956,9 +956,9 @@
         <v-spacer></v-spacer>
         <h3
           class="grey--text font-weight-medium"
-          v-show="dataForJson.clientName"
+          v-show="dataForFrontEnd.clientName"
         >
-          New Client: {{ dataForJson.clientName }}
+          New Client: {{ dataForFrontEnd.clientName }}
         </h3>
 
         <v-spacer></v-spacer>
@@ -977,9 +977,9 @@
         <v-spacer></v-spacer>
         <h3
           class="grey--text font-weight-medium"
-          v-show="dataForJson.clientName"
+          v-show="dataForFrontEnd.clientName"
         >
-          New Client: {{ dataForJson.clientName }}
+          New Client: {{ dataForFrontEnd.clientName }}
         </h3>
 
         <v-spacer></v-spacer>
@@ -996,9 +996,9 @@
         <v-spacer></v-spacer>
         <h3
           class="grey--text font-weight-medium"
-          v-show="dataForJson.clientName"
+          v-show="dataForFrontEnd.clientName"
         >
-          New Client: {{ dataForJson.clientName }}
+          New Client: {{ dataForFrontEnd.clientName }}
         </h3>
 
         <v-spacer></v-spacer>
@@ -1019,9 +1019,9 @@
         <v-spacer></v-spacer>
         <h3
           class="grey--text font-weight-medium"
-          v-show="dataForJson.clientName"
+          v-show="dataForFrontEnd.clientName"
         >
-          New Client: {{ dataForJson.clientName }}
+          New Client: {{ dataForFrontEnd.clientName }}
         </h3>
 
         <v-spacer></v-spacer>
@@ -1037,27 +1037,41 @@
 </template>
 
 <script>
+
+//library voor het maken van ZIP-mapjes. Zie: JSZIP
 import JSZip from "jszip";
+
+//libray voor het opslaan van bestanden
 import FileSaver from "file-saver";
+
 export default {
   name: "HelloWorld",
 
   data: () => ({
-    baseURL: "checkBox.svg",
+    //waarde Vuetify voor tonen van stap in stepper-component
     e1: 1,
+
+    //waarde voor openen/sluiten v-card componenten Veutify
     showDetails: true,
     showBrands: false,
     showDeparments: false,
     showMarkets: false,
-    test: [],
-    showSummaryClient: false,
+    showSummaryClient: true,
+    showPreset: true,
+    showModules: false,
+    showCampaignChannels: false,
 
-    //testdataSeperateJSONS
+    // waarde voor tonen dialogscherm
+    dialog: false,
+
+    //data voor JSON-bestanden
     dataForSetup: {},
     dataForCampaignFormat: {},
     dataForPublishProfiles: {},
 
-    dataForJson: {
+
+    //data voor weergave front-end
+    dataForFrontEnd: {
       //step1
       clientName: "",
       environmentLink: "",
@@ -1738,21 +1752,581 @@ export default {
           about:
             "Now they can manage all campaign types, budgets, and creatives in one place. This includes validation checks and the ability to publish campaigns to the right audience at the platform of choice, and all the necessary campaign build-up, targeting and naming conventions. Expedia needs a way to orchestrate their retail media services by collecting information from their advertisers.",
         },
+
+        interfaceSetup: {
+          pages: [
+            {
+              key: crypto.randomUUID(),
+              templateTitle: "Settings",
+              type: "page",
+              title: "Settings",
+              path: "settings",
+              showLanguageSelector: false,
+              multiLanguage: false,
+              tour: false,
+              tabs: [
+                {
+                  key: crypto.randomUUID(),
+                  title: "General",
+                  path: "general",
+                  type: "page",
+                  showLanguageSelector: false,
+                  multiLanguage: false,
+                  tour: false,
+                  blocks: [
+                    {
+                      title: "General settings",
+                      itemType: "block",
+                      type: "multiInput",
+                      opened: true,
+                      items: [
+                        {
+                          key: crypto.randomUUID(),
+                          type: "assetGalleryInput",
+                          title: "image",
+                          fileType: "image",
+                          itemType: "input",
+                          label: "Image icon",
+                          model: "settings.image",
+                          sourceDataModel: "settings.imageLibrary",
+                          format: "Square",
+                          outputWidth: 600,
+                          outputHeight: 600,
+                        },
+                        {
+                          key: crypto.randomUUID(),
+                          type: "text",
+                          title: "title",
+                          model: "settings.title",
+                          itemType: "input",
+                          label: "Title",
+                          readOnly: "{{{auth.type=='user'}}}",
+                          maxLength: 50,
+                          useValueObject: false,
+                          validators: [
+                            {
+                              type: "length",
+                              max: 20,
+                              severity: "warning",
+                              message:
+                                "Text over 20 characters is allowed, but can cause displaing issues",
+                            },
+                          ],
+                        },
+                        {
+                          key: crypto.randomUUID(),
+                          type: "richtext",
+                          title: "Description",
+                          model: "settings.description",
+                          itemType: "input",
+                          label: "Description",
+                          includedOptions: [
+                            "heading",
+                            "|",
+                            "bold",
+                            "italic",
+                            "link",
+                            "bulletedList",
+                            "numberedList",
+                          ],
+                        },
+                        {
+                          key: crypto.randomUUID(),
+                          label: "Status",
+                          type: "select",
+                          itemType: "input",
+                          model: "concept.status",
+                          options: {
+                            unpublished: "Unpublished",
+                            published: "Published",
+                          },
+                        },
+                      ],
+                      key: crypto.randomUUID(),
+                    },
+                    {
+                      title: "Planning",
+                      itemType: "block",
+                      type: "planning",
+                      opened: true,
+                      items: [
+                        {
+                          key: crypto.randomUUID(),
+                          type: "dateRange",
+                          model: "settings.planning",
+                          label: "Planning",
+                          minDate: "",
+                          itemType: "input",
+                          maxDate: "",
+                        },
+                      ],
+                      key: crypto.randomUUID(),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              key: crypto.randomUUID(),
+              templateTitle: "Generic page",
+              type: "page",
+              title: "Display",
+              path: "display",
+              showLanguageSelector: false,
+              multiLanguage: false,
+              tour: false,
+              tabs: [
+                {
+                  key: crypto.randomUUID(),
+                  title: "General",
+                  path: "general",
+                  type: "page",
+                  showLanguageSelector: false,
+                  multiLanguage: false,
+                  tour: false,
+                  blocks: [
+                    {
+                      title: "Creative Builder",
+                      type: "creativeBuilder",
+                      itemType: "block",
+                      multilanguage: true,
+                      review: true,
+                      model: "creativeBuilder.setup",
+                      dataModel: "creativeBuilder.data",
+                      templateTypes: ["displayAd", "displayAdDesigned"],
+                      hasMuiIcon: true,
+                      icon: "design_services",
+                      key: crypto.randomUUID(),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              key: crypto.randomUUID(),
+              templateTitle: "Generic page",
+              type: "page",
+              title: "Social",
+              path: "social",
+              showLanguageSelector: false,
+              multiLanguage: false,
+              tour: false,
+              tabs: [
+                {
+                  key: crypto.randomUUID(),
+                  title: "General",
+                  path: "general",
+                  type: "page",
+                  showLanguageSelector: false,
+                  multiLanguage: false,
+                  tour: false,
+                  blocks: [
+                    {
+                      title: "Creative Builder",
+                      type: "creativeBuilder",
+                      itemType: "block",
+                      multilanguage: true,
+                      review: true,
+                      model: "creativeBuilderSocial.setup",
+                      dataModel: "creativeBuilderSocial.data",
+                      templateTypes: ["socialChannelItem"],
+                      hasMuiIcon: true,
+                      icon: "design_services",
+                      key: crypto.randomUUID(),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              path: "email",
+              title: "Email",
+              blockModelBase: "email",
+              blockModel: "email",
+              preview: {
+                type: "multi-email",
+                multiLanguage: true,
+                model: "multiEmailBuilder.setup",
+                dataModel: "multiEmailBuilder.data",
+              },
+              blocks: [
+                {
+                  type: "multiEmailBuilder",
+                  title: "Email content",
+                  review: true,
+                  model: "multiEmailBuilder.setup",
+                  dataModel: "multiEmailBuilder.data",
+                  canEdit: true,
+                  planning: true,
+                  planningMax: 5,
+                  editorData: {
+                    lockedLevel: 7,
+                    canAdd: true,
+                    canMove: true,
+                    canRemove: true,
+                    canEdit: true,
+                    maxBlocks: 13,
+                  },
+                  settingsInterfaceSetup: [
+                    {
+                      type: "textMultiLanguage",
+                      model: "subject",
+                      readOnly: "{{{auth.type=='user'}}}",
+                      label: "Subject",
+                    },
+                    {
+                      type: "divider",
+                    },
+                    {
+                      type: "textMultiLanguage",
+                      model: "snippet",
+                      readOnly: "{{{auth.type=='user'}}}",
+                      label: "Snippet",
+                    },
+                    {
+                      type: "select",
+                      model: "settings.utmContent",
+                      label: "UTM content",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      selectType: "single",
+                      options: {
+                        NOTSET: "Select..",
+                        teaser: "Teaser",
+                        initial: "Initial",
+                        reminder: "Reminder",
+                        reminder2: "Reminder 2",
+                        reminder3: "Reminder 3",
+                      },
+                    },
+                    {
+                      type: "divider",
+                    },
+                    {
+                      type: "select",
+                      model: "info.identifierChannel",
+                      label: "Variant identifier",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      defaultValue: "z",
+                      options: {
+                        z: "z",
+                        a: "a",
+                        b: "b",
+                        c: "c",
+                        d: "d",
+                        e: "e",
+                      },
+                    },
+                    {
+                      type: "hidden",
+                      model: "settings.identifierChannel",
+                      parseValue: "{{{[[blockModel]].info.identifierChannel}}}",
+                    },
+                    {
+                      type: "select",
+                      model: "info.identifierTarget",
+                      label: "Audience identifier",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      defaultValue: "z",
+                      options: {
+                        1: "1",
+                        2: "2",
+                        3: "3",
+                        4: "4",
+                        5: "5",
+                        z: "z",
+                      },
+                    },
+                    {
+                      type: "hidden",
+                      model: "settings.identifierTarget",
+                      parseValue: "{{{[[blockModel]].info.identifierTarget}}}",
+                    },
+                    {
+                      type: "display",
+                      model: "info.campaignCode",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      label: "Campaign code",
+                      condition:
+                        "blockData.info.identifierChannel && blockData.info.identifierTarget",
+                      displayValue:
+                        "{{{campaign.settings.identifier+'em'+[[blockModel]].info.identifierChannel+[[blockModel]].info.identifierTarget+'00'}}}",
+                    },
+                    {
+                      type: "divider",
+                    },
+                    {
+                      type: "text",
+                      model: "info.reportingName",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      tooltip:
+                        "This is a measurement that will be shown in the report",
+                      label: "Reporting name",
+                    },
+                    {
+                      type: "display",
+                      model: "info.reportingString",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      label: "Campaign reporting string",
+                      condition:
+                        "blockData.info.identifierChannel && blockData.info.identifierTarget && blockData.info.reportingName",
+                      displayValue:
+                        "{{{campaign.settings.identifier+'em'+[[blockModel]].info.identifierChannel+[[blockModel]].info.identifierTarget+'00'+'_'+campaign.settings.titleInput+'_'+[[blockModel]].info.reportingName.value}}}",
+                    },
+                    {
+                      type: "display",
+                      model: "targetAudience",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      label: "Campaign target audience",
+                      displayValue: "{{{campaign.settings.targetAudience}}}",
+                    },
+                    {
+                      type: "text",
+                      model: "info.targetAudience",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      tooltip:
+                        "Denk aan SOK, personeel, voorspelmodel en ontdubbelen, Huishouden en emailadres.",
+                      label: "Target Audience",
+                      multiline: true,
+                    },
+                    {
+                      type: "assetSelector",
+                      model: "info.emailPdf",
+                      readOnly:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      label: "Definitive version email",
+                      sourceDataModel: "email.pdfLibrary",
+                      fileType: "pdf",
+                    },
+                    {
+                      type: "number",
+                      model: "kpi.openrate",
+                      label: "Open rate",
+                      condition:
+                        "{{{auth.type!='user' && auth.type!='marketManager' && auth.type!='campaignManagerDepartment'}}}",
+                      valueLabelDisplay: "on",
+                      startAdornment: "%",
+                      defaultValue: 50,
+                    },
+                    {
+                      type: "display",
+                      label: "Open rate",
+                      condition:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      displayValue: "{{{[[blockModel]].kpi.openrate}}}",
+                      model: "kpi.openrateDisplay",
+                    },
+                    {
+                      type: "number",
+                      model: "kpi.cto",
+                      condition:
+                        "{{{auth.type!='user' && auth.type!='marketManager' && auth.type!='campaignManagerDepartment'}}}",
+                      valueLabelDisplay: "on",
+                      label: "Click To Open",
+                      startAdornment: "%",
+                      defaultValue: 50,
+                    },
+                    {
+                      type: "display",
+                      label: "Click To Open",
+                      condition:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      displayValue: "{{{[[blockModel]].kpi.cto}}}",
+                      model: "kpi.ctoDisplay",
+                    },
+                    {
+                      type: "number",
+                      model: "kpi.optout",
+                      condition:
+                        "{{{auth.type!='user' && auth.type!='marketManager' && auth.type!='campaignManagerDepartment'}}}",
+                      valueLabelDisplay: "on",
+                      label: "Opt Out",
+                      startAdornment: "%",
+                      defaultValue: 50,
+                    },
+                    {
+                      type: "display",
+                      label: "Opt Out",
+                      condition:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      displayValue: "{{{[[blockModel]].kpi.optout}}}",
+                      model: "kpi.optoutDisplay",
+                    },
+                    {
+                      type: "number",
+                      model: "kpi.closeAlert",
+                      condition:
+                        "{{{auth.type!='user' && auth.type!='marketManager' && auth.type!='campaignManagerDepartment'}}}",
+                      valueLabelDisplay: "on",
+                      label: "Close Alert",
+                      defaultValue: 0,
+                    },
+                    {
+                      type: "display",
+                      label: "Close Alert",
+                      condition:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      displayValue: "{{{[[blockModel]].kpi.closeAlert}}}",
+                      model: "kpi.closeAlertDisplay",
+                    },
+                    {
+                      type: "number",
+                      label: "Annual Premium Equivalent (APE)",
+                      condition:
+                        "{{{auth.type!='user' && auth.type!='marketManager' && auth.type!='campaignManagerDepartment'}}}",
+                      maxLength: 10,
+                      model: "kpi.ape",
+                      useValueObject: false,
+                      helperText: "numbers only in this APE",
+                    },
+                    {
+                      type: "display",
+                      label: "Annual Premium Equivalent (APE)",
+                      condition:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      displayValue: "{{{[[blockModel]].kpi.ape}}}",
+                      model: "kpi.apeDisplay",
+                    },
+                    {
+                      type: "number",
+                      model: "kpi.obligo",
+                      condition:
+                        "{{{auth.type!='user' && auth.type!='marketManager' && auth.type!='campaignManagerDepartment'}}}",
+                      label: "Obligo",
+                      maxLength: 10,
+                      useValueObject: false,
+                    },
+                    {
+                      type: "display",
+                      label: "Obligo",
+                      condition:
+                        "{{{auth.type=='user' || auth.type=='marketManager' || auth.type=='campaignManagerDepartment'}}}",
+                      displayValue: "{{{[[blockModel]].kpi.obligo}}}",
+                      model: "kpi.obligoDisplay",
+                    },
+                  ],
+                  key: "89c1fa0c-bff1-4951-87f4-8756de208de9",
+                  itemType: "block",
+                },
+              ],
+              key: "5327d2a2-9780-4627-8db4-17a036fd6fd3",
+            },
+            {
+              key: "28823406-e30d-487a-b827-efe1c94ec541",
+              templateTitle: "Generic page",
+              type: "page",
+              title: "Publish",
+              path: "publish",
+              showLanguageSelector: false,
+              multiLanguage: false,
+              tour: false,
+              tabs: [
+                {
+                  key: "c1ec4a9a-5c94-4a30-8a59-1ef52c1210e5",
+                  title: "General",
+                  path: "general",
+                  type: "page",
+                  showLanguageSelector: false,
+                  multiLanguage: false,
+                  tour: false,
+                  blocks: [
+                    {
+                      title: "Publish",
+                      itemType: "block",
+                      opened: true,
+                      type: "publish",
+                      model: "publish.results",
+                      hasMuiIcon: true,
+                      icon: "publish",
+                      key: "5537b9bc-38f0-4608-b13e-ce9033a7502b",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+
+        publishProfiles: {
+          export: {
+            title: "Export video",
+            tasks: [
+              {
+                processingFunction: "creativeBuilder",
+                model: "creativeBuilder.setup",
+                dataModel: "creativeBuilder.data",
+                assetTypes: ["dynamicVideo", "dynamicVideoDesigned"],
+                type: "export",
+              },
+            ],
+          },
+          exportAds: {
+            title: "Export display",
+            tasks: [
+              {
+                processingFunction: "creativeBuilder",
+                model: "creativeBuilder.setup",
+                dataModel: "creativeBuilder.data",
+                assetTypes: ["displayAd", "displayAdDesigned"],
+                type: "export",
+                enablePartial: true,
+              },
+            ],
+          },
+          exportAdsGIF: {
+            title: "Export display to GIF",
+            tasks: [
+              {
+                processingFunction: "creativeBuilder",
+                model: "creativeBuilder.setup",
+                dataModel: "creativeBuilder.data",
+                assetTypes: ["displayAd"],
+                type: "export",
+                exportType: "gif",
+              },
+            ],
+          },
+          exportImage: {
+            title: "Export dynamic image",
+            tasks: [
+              {
+                processingFunction: "creativeBuilder",
+                model: "creativeBuilder.setup",
+                dataModel: "creativeBuilder.data",
+                assetTypes: ["dynamicImage", "dynamicImageDesigned"],
+                type: "export",
+                enablePartial: true,
+              },
+            ],
+          },
+          exportPDF: {
+            title: "Export POS pdf",
+            tasks: [
+              {
+                processingFunction: "creativeBuilder",
+                model: "creativeBuilderPOS.setup",
+                dataModel: "creativeBuilderPOS.data",
+                assetTypes: ["dynamicPDF"],
+                type: "export",
+              },
+            ],
+          },
+        },
       },
     },
 
-    //data voor info presets
-    infoClickedPreset: {
-      title: "",
-      modules: [],
-      channels: [],
-      campaignformatTitle: "",
-    },
-
-    //data voor info presets TABS
+    //data voor info modal
     tab: null,
     items: ["content", "info"],
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    currentPresetInfo: {},
+   
 
     // data voor markets
     dataForMarkets: {
@@ -1763,13 +2337,6 @@ export default {
         Duitsland: ["GE"],
       },
     },
-
-    //data voor info modal presets
-    dialog: false,
-    currentPresetInfo: {},
-    notifications: false,
-    sound: true,
-    widgets: false,
 
     //data voor user types (checkboxes)
     dataForUserTypes: {
@@ -1846,17 +2413,9 @@ export default {
         ],
       },
     },
-
-    //data voor preset options
-    showPreset: true,
   }),
   methods: {
-    returnCountries() {
-      return this.dataForMarkets.marketNames.map((market) => {
-        const marketKey = Object.keys(market)[0];
-        return market[marketKey];
-      });
-    },
+    // add methodes pushen lege strings naar data voor front-end, zodat in de HTML lege text-boxes verschijnen
     addBrandsTextfield() {
       this.showBrands = true;
       this.dataStep1.brands.push("");
@@ -1867,9 +2426,18 @@ export default {
       this.dataStep1.departments.push("");
     },
 
+    
+    // pusht lege string en array naar 
     addMarketsTextfield() {
       this.showMarkets = true;
       this.dataStep1.markets.push({ marketCountry: "", marketLanguages: [] });
+    },
+
+    returnCountries() { 
+      return this.dataForMarkets.marketNames.map((market) => {
+        const marketKey = Object.keys(market)[0];
+        return market[marketKey];
+      });
     },
     dataForLanguages(market, key) {
       let autoCompleteLanguages = this.dataForMarkets.marketLanguages[market];
@@ -1878,8 +2446,8 @@ export default {
 
     addDataStep1() {
       this.e1 = 2;
-      this.dataForJson = {
-        ...this.dataForJson,
+      this.dataForFrontEnd = {
+        ...this.dataForFrontEnd,
         ...this.dataStep1,
       };
 
@@ -1917,15 +2485,14 @@ export default {
         markets: marketData,
         languages: marketData,
         departments: departmentData,
-        brands: brandData,
-        /*markets: this.dataStep1.markets.map((market) => market.marketCountry),*/
+        brands: brandData
       };
     },
 
     addDataStep2() {
       this.e1 = 3;
-      this.dataForJson = {
-        ...this.dataForJson,
+      this.dataForFrontEnd = {
+        ...this.dataForFrontEnd,
         ...this.dataStep2,
       };
 
@@ -1955,8 +2522,8 @@ export default {
 
     addDataStep4() {
       this.e1 = 5;
-      this.dataForJson = {
-        ...this.dataForJson,
+      this.dataForFrontEnd = {
+        ...this.dataForFrontEnd,
         ...this.dataStep4,
       };
       this.dataForSetup = {
@@ -1965,23 +2532,6 @@ export default {
       };
       console.log(this.dataForSetup);
     },
-    /*
-    downloadJSON() {
-      let objectToJSON = JSON.stringify(this.dataForJson, null, 2);
-      let JSONForDownload =
-        "data:text/json;charset=utf-8," + encodeURIComponent(objectToJSON);
-
-      let invissibleButton = document.getElementById(
-        "invissibleButtonJSONDownload"
-      );
-      invissibleButton.setAttribute("href", JSONForDownload);
-      invissibleButton.setAttribute(
-        "download",
-        this.dataForJson.clientName + ".json"
-      );
-      invissibleButton.click();
-    },
-    */
     downloadZIPTEST() {
       let zip = new JSZip();
 
@@ -1989,7 +2539,7 @@ export default {
         let marketObject = {
           languages: element.marketLanguages,
         };
-        let singleJSON = JSON.stringify(element, null, 2);
+        let singleJSON = JSON.stringify(marketObject, null, 2);
         let name = element.marketCountry + ".json";
         zip.file(name, singleJSON);
       });
@@ -2015,105 +2565,5 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.sticky-top {
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0;
-  background-color: #ffffff;
-  z-index: 1;
-}
-
-.sticky-bottom {
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  bottom: 0;
-  background-color: #ffffff;
-  z-index: 1;
-}
-
-.stepper {
-  overflow: visible;
-  z-index: 0;
-  min-height: 98vh;
-  position: relative;
-}
-
-.step {
-  min-height: 98vh;
-}
-
-.container {
-  width: 40%;
-}
-
-.containerClient {
-  width: 50%;
-}
-
-.containerUsertypes {
-  width: 55%;
-}
-
-.active {
-  border: 2px solid #2b81d6;
-}
-
-.active-preset {
-  border: 2px solid #2b81d6;
-  background-color: #f6f9fe !important;
-}
-
-.active-preset .svg {
-  fill: #2b81d6;
-}
-
-.modal-title-description {
-  display: flex;
-  flex-direction: column;
-}
-
-.height-modal-toolbar {
-  height: fit-content;
-}
-
-.svg {
-  color: #2b81d6;
-}
-
-/*svg aanpassen wanneer preset geselecteerd*/
-.icon {
-  display: inline-block;
-  width: 48px;
-  height: 48px;
-  background-size: cover;
-}
-
-.icon-user-type {
-  width: 48px;
-  height: 48px;
-}
-
-.icon-build-creatives {
-  background-image: url(../assets/presetIcons/buildCreatives.svg);
-}
-
-.icon-build-creatives-focus {
-  background-image: url(../assets/presetIcons/buildCreativesFocus.svg);
-}
-
-.icon-publish-campaigns {
-  background-image: url(../assets/presetIcons/publishCampaigns.svg);
-}
-
-.icon-publish-campaigns-focus {
-  background-image: url(../assets/presetIcons/publishCampaignsFocus.svg);
-}
-
-.v-dialog:not(.v-dialog--fullscreen) {
-  bottom: 0 !important;
-  right: 0 !important;
-  position: absolute !important;
-}
+<style scoped src="@/assets/styles/stepper.css">
 </style>

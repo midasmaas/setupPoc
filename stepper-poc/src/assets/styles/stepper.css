@@ -1,0 +1,99 @@
+.sticky-top {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1;
+  }
+  
+  .sticky-bottom {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    bottom: 0;
+    background-color: #ffffff;
+    z-index: 1;
+  }
+  
+  .stepper {
+    overflow: visible;
+    z-index: 0;
+    min-height: 98vh;
+    position: relative;
+  }
+  
+  .step {
+    min-height: 98vh;
+  }
+  
+  .container {
+    width: 40%;
+  }
+  
+  .containerClient {
+    width: 50%;
+  }
+  
+  .containerUsertypes {
+    width: 55%;
+  }
+  
+  .active {
+    border: 2px solid #2b81d6;
+  }
+  
+  .active-preset {
+    border: 2px solid #2b81d6;
+    background-color: #f6f9fe !important;
+  }
+  
+  .active-preset .svg {
+    fill: #2b81d6;
+  }
+  
+  .modal-title-description {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .height-modal-toolbar {
+    height: fit-content;
+  }
+  
+  .svg {
+    color: #2b81d6;
+  }
+  
+  /*svg aanpassen wanneer preset geselecteerd*/
+  .icon {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background-size: cover;
+  }
+  
+  .icon-user-type {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .icon-build-creatives {
+    background-image: url(../presetIcons/buildCreatives.svg);
+  }
+  
+  .icon-build-creatives-focus {
+    background-image: url(../presetIcons/buildCreativesFocus.svg);
+  }
+  
+  .icon-publish-campaigns {
+    background-image: url(../presetIcons/publishCampaigns.svg);
+  }
+  
+  .icon-publish-campaigns-focus {
+    background-image: url(../presetIcons/publishCampaignsFocus.svg);
+  }
+  
+  .v-dialog:not(.v-dialog--fullscreen) {
+    bottom: 0 !important;
+    right: 0 !important;
+    position: absolute !important;
+  }
