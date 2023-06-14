@@ -182,11 +182,9 @@ data: () => ({
 methods: {
     presetInfo(CurrentPresetInfoParam) {
       this.dialog = true;
-      this.currentPresetForModule = CurrentPresetInfoParam;
+      this.$emit('changeCurrentPresetInModdule', CurrentPresetInfoParam)
     },
     chosenPreset(CurrentPresetInfoParam) {
-      //this.currentPresetForModule = CurrentPresetInfoParam;
-
       this.$emit('changeCurrentPresetInModdule', CurrentPresetInfoParam)
     },
 }

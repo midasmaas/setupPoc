@@ -163,401 +163,25 @@
               and a campaign format.
             </p>
           </v-row>
-
-          <!--Info dialog BEGIN
-          <v-row justify="center">
-            <v-dialog
-              v-model="dialog"
-              fullscreen
-              hide-overlay
-              transition="dialog-bottom-transition"
-            >
-              <v-card>
-                <v-toolbar class="height-modal-toolbar">
-                  <div class="modal-title-description">
-                    <v-toolbar-title>{{
-                      currentPresetInfo.title
-                    }}</v-toolbar-title>
-
-                    <p class="grey--text font-weight-medium pa-0 ma-0">
-                      {{ currentPresetInfo.subTitle }}
-                    </p>
-                  </div>
-
-                  <v-spacer></v-spacer>
-                  <v-btn icon @click="dialog = false">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-toolbar>
-
-                <v-tabs class="pt-1" v-model="tab">
-                  <v-tabs-slider color="primary"></v-tabs-slider>
-
-                  <v-tab v-for="(item, key) in items" :key="key">
-                    {{ item }}
-                  </v-tab>
-                </v-tabs>
-
-                <v-tabs-items v-model="tab">
-                  <v-tab-item>
-                    <v-card flat>
-                      <v-card-title> Modules </v-card-title>
-                      <v-card-text>
-                        <li
-                          v-for="(moduleItem, key) in currentPresetInfo.modules"
-                          :key="key"
-                        >
-                          {{ moduleItem }}
-                        </li>
-                      </v-card-text>
-                    </v-card>
-                  </v-tab-item>
-
-                  <v-tab-item>
-                    <v-card flat>
-                      <v-card-title> About </v-card-title>
-                      <v-card-text>{{ currentPresetInfo.about }}</v-card-text>
-                    </v-card>
-                  </v-tab-item>
-                </v-tabs-items>
-              </v-card>
-            </v-dialog>
-          </v-row>
-          Info dialog EINDE-->
-          <!-- preset radio buttons
-          <v-radio-group class="ma-0" v-model="dataStep2.preset" column>
-            <v-card
-              class="ma-4"
-              :class="{
-                'active-preset':
-                  dataStep2.preset === dataForPresets.preset1Data,
-              }"
-            >
-              <v-row class="ma-6">
-                <v-row>
-                  <v-radio
-                    @click="chosenPreset(dataForPresets.preset1Data.presetInfo)"
-                    color="primary"
-                    :value="dataForPresets.preset1Data"
-                    class="mb-0"
-                  >
-                  </v-radio>
-                  <div
-                    class="icon icon-build-creatives ma-2"
-                    :class="{
-                      'icon-build-creatives-focus':
-                        dataStep2.preset === dataForPresets.preset1Data,
-                      'icon-build-creatives':
-                        dataStep2.preset !== dataForPresets.preset1Data,
-                    }"
-                  ></div>
-                  <div class="modal-title-description my-auto">
-                    <h4>{{ dataForPresets.preset1Data.title }}</h4>
-                    <p class="mb-0 grey--text">
-                      {{ dataForPresets.preset1Data.presetInfo.subTitle }}
-                    </p>
-                  </div>
-                </v-row>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="primary"
-                  class="mx-4"
-                  text
-                  @click="presetInfo(dataForPresets.preset1Data.presetInfo)"
-                >
-                  info
-                </v-btn>
-              </v-row>
-            </v-card>
-            <v-card
-              class="ma-4"
-              :class="{
-                'active-preset':
-                  dataStep2.preset === dataForPresets.preset2Data,
-              }"
-            >
-              <v-row class="ma-6">
-                <v-row>
-                  <v-radio
-                    color="primary"
-                    :value="dataForPresets.preset2Data"
-                    class="mb-0"
-                    @click="chosenPreset(dataForPresets.preset2Data.presetInfo)"
-                  ></v-radio>
-
-                  <div
-                    class="icon icon-build-creatives ma-2"
-                    :class="{
-                      'icon-publish-campaigns-focus':
-                        dataStep2.preset === dataForPresets.preset2Data,
-                      'icon-publish-campaigns':
-                        dataStep2.preset !== dataForPresets.preset2Data,
-                    }"
-                  ></div>
-                  <div class="modal-title-description my-auto">
-                    <h4>{{ dataForPresets.preset2Data.title }}</h4>
-                    <p class="mb-0 grey--text">
-                      {{ dataForPresets.preset2Data.presetInfo.subTitle }}
-                    </p>
-                  </div>
-                </v-row>
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="primary"
-                  class="mx-4"
-                  text
-                  @click="presetInfo(dataForPresets.preset2Data.presetInfo)"
-                >
-                  info
-                </v-btn>
-              </v-row>
-            </v-card>
-          </v-radio-group>
-
-          -->
-
           <module-preset-preset-selectie v-on:changeCurrentPresetInModdule="updataCurrentPreset($event)" :currentPresetForModule="currentPresetInfo" :presetDataForModule="dataForPresets" :dataStep2ForModule="dataStep2"> </module-preset-preset-selectie>
         </v-container>
       </v-stepper-content>
 
       <!-- STEP 3: presetoptions -->
       <v-stepper-content step="3" class="step">
-        <v-container class="containerClient" fluid>
-          <!-- pagina vraag + omschrijving -->
-          <v-row class="mx-6 my-0">
-            <h1>Do you want to edit the preset options?</h1>
-            <p class="grey--text font-weight-medium">
-              Edit the options in the preset or leave it as it is.
-            </p>
-          </v-row>
-
-          <!-- preset choice block -->
-          <v-card class="my-8">
-            <v-card-actions>
-              <v-card-title> Chosen preset </v-card-title>
-
-              <v-spacer></v-spacer>
-                
-              <v-btn icon @click="showPreset = !showPreset">
-                <v-icon>{{
-                  !showPreset ? "mdi-chevron-down" : "mdi-chevron-up"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div class="pb-1" v-show="showPreset">
-                <v-divider></v-divider>
-
-                <v-card class="ma-4" outlined>
-                  <v-row class="ma-6">
-                    <v-row>
-                      <div
-                        class="icon ma-2"
-                        :class="dataForFrontEnd.preset.iconClass"
-                      ></div>
-                      <div class="modal-title-description my-auto">
-                        <h4>{{ dataForFrontEnd.preset.title }}</h4>
-                        <p class="mb-0 grey--text">
-                          {{ currentPresetInfo.subTitle }}
-                        </p>
-                      </div>
-                    </v-row>
-                    <v-spacer></v-spacer>
-                  </v-row>
-                </v-card>
-              </div>
-            </v-expand-transition>
-          </v-card>
-
-          <!-- system modules block-->
-          <v-card class="my-8">
-            <v-card-actions>
-              <v-card-title> System modules </v-card-title>
-
-              <v-spacer></v-spacer>
-
-              <v-btn icon @click="showModules = !showModules">
-                <v-icon>{{
-                  !showModules ?  "mdi-chevron-down" : "mdi-chevron-up"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div class="pb-1" v-show="showModules">
-                <v-divider></v-divider>
-
-                <v-checkbox
-                  v-for="(item, key) in dataForFrontEnd.preset.modules"
-                  :key="key"
-                  v-model="dataForFrontEnd.preset.modules[key]"
-                  :label="dataForFrontEnd.preset.modules[key]"
-                >
-                </v-checkbox>
-                <v-btn class="ma-2" outlined color="primary"
-                  >more options</v-btn
-                >
-              </div>
-            </v-expand-transition>
-          </v-card>
-
-          <!-- channels block-->
-          <v-card class="my-8">
-            <v-card-actions>
-              <v-card-title> Campaign channels </v-card-title>
-
-              <v-spacer></v-spacer>
-
-              <v-btn icon @click="showCampaignChannels = !showCampaignChannels">
-                <v-icon>{{
-                  !showCampaignChannels ? "mdi-chevron-down" : "mdi-chevron-up"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div class="pb-1" v-show="showCampaignChannels">
-                <v-divider></v-divider>
-                <v-simple-table>
-                  <thead>
-                    <tr>
-                      <th class="text-left">Channel</th>
-                      <th class="text-left">Create</th>
-                      <th class="text-left">Publish</th>
-                      <th class="text-left">Analytics</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr
-                      v-for="(channel, key) in dataForFrontEnd.preset.channels"
-                      :key="key"
-                    >
-                      <td>{{ channel }}</td>
-                      <td>
-                        <v-checkbox
-                          v-model="dataStep4.userTypes"
-                          :value="dataForUserTypes.admin"
-                        ></v-checkbox>
-                      </td>
-                      <td>
-                        <v-checkbox
-                          v-model="dataStep4.userTypes"
-                          :value="dataForUserTypes.admin"
-                        ></v-checkbox>
-                      </td>
-                      <td>
-                        <v-checkbox
-                          v-model="dataStep4.userTypes"
-                          :value="dataForUserTypes.admin"
-                        ></v-checkbox>
-                      </td>
-                    </tr>
-                  </tbody>
-                </v-simple-table>
-              </div>
-            </v-expand-transition>
-          </v-card>
-        </v-container>
+      <preset-options :currentPresetForPresetOptions="currentPresetInfo" :frontEndDataForPresetOptions="dataForFrontEnd" :userTypesDatForPresetOptions="dataForUserTypes" :dataStep4ForPresetOptions="dataStep4"> </preset-options>
       </v-stepper-content>
 
       <!-- STEP 4: user types -->
       <v-stepper-content step="4" class="step">
-        <v-container class="containerUsertypes" fluid>
-          <!-- pagina vraag + omschrijving -->
-          <v-row class="mx-6 my-0">
-            <h1>What user types do you want to use?</h1>
-            <p class="grey--text font-weight-medium">
-              Users have unique rights, allowing the customer to collaborate in
-              their own way.
-            </p>
-          </v-row>
-
-          <v-card class="pa-4 ma-4">
-            <v-row class="ma-2">
-              <v-row>
-                <v-checkbox
-                  class="mt-5 ml-3"
-                  v-model="dataStep4.userTypes"
-                  :value="dataForUserTypes.admin"
-                ></v-checkbox>
-                <img
-                  class="icon-user-type mt-3 mx-3"
-                  src="../assets/userTypesIcons/admin.svg"
-                />
-                <div class="modal-title-description my-auto">
-                  <h4>Admin</h4>
-                  <p class="mb-0 grey--text">
-                    All rights. Manages all teams, users, campaigns.
-                  </p>
-                </div>
-              </v-row>
-              <v-spacer></v-spacer>
-            </v-row>
-          </v-card>
-
-          <v-card class="pa-4 ma-4">
-            <v-row class="ma-2">
-              <v-row>
-                <v-checkbox
-                  class="mt-5 ml-3"
-                  v-model="dataStep4.userTypes"
-                  :value="dataForUserTypes.manager"
-                ></v-checkbox>
-                <img
-                  class="icon-user-type mt-3 mx-3"
-                  src="../assets/userTypesIcons/manager.svg"
-                />
-                <div class="modal-title-description my-auto">
-                  <h4>Manager</h4>
-                  <p class="mb-0 grey--text">
-                    Creating, managing and launching marketing campaigns with
-                    the right contents.
-                  </p>
-                </div>
-              </v-row>
-              <v-spacer></v-spacer>
-            </v-row>
-          </v-card>
-
-          <v-card class="pa-4 ma-4">
-            <v-row class="ma-2">
-              <v-row>
-                <v-checkbox
-                  class="mt-5 ml-3"
-                  v-model="dataStep4.userTypes"
-                  :value="dataForUserTypes.creative"
-                ></v-checkbox>
-                <img
-                  class="icon-user-type mt-3 mx-3"
-                  src="../assets/userTypesIcons/creative.svg"
-                />
-                <div class="modal-title-description my-auto">
-                  <h4>Creative</h4>
-                  <p class="mb-0 grey--text">
-                    Providing the marketing campaigns with the right designs and
-                    reviewing them before launch.
-                  </p>
-                </div>
-              </v-row>
-              <v-spacer></v-spacer>
-            </v-row>
-          </v-card>
-
-          <v-btn class="ma-2" outlined color="primary">
-            custom
-            <v-icon right> mdi-account </v-icon>
-          </v-btn>
-        </v-container>
+        <usertypes-selection :dataStep4ForUserTypes="dataStep4" :dataUserTypesForUserTypes="dataForUserTypes"></usertypes-selection>
       </v-stepper-content>
 
       <!-- STEP 5: summary -->
       <v-stepper-content step="5" class="step">
+        <!--
         <v-container class="containerUsertypes" fluid>
-          <!-- content -->
-
-          <!-- client summary block -->
+        
           <v-card class="my-4">
             <v-card-actions>
               <v-card-title>
@@ -624,8 +248,6 @@
               </div>
             </v-expand-transition>
           </v-card>
-
-          <!-- chosen preset block-->
           <v-card class="my-4">
             <v-card-actions>
               <v-card-title> Module- and campaign preset </v-card-title>
@@ -666,8 +288,6 @@
               </div>
             </v-expand-transition>
           </v-card>
-
-          <!-- preset options block-->
           <v-card class="my-4">
             <v-card-actions>
               <v-card-title> Preset options </v-card-title>
@@ -715,8 +335,6 @@
               </div>
             </v-expand-transition>
           </v-card>
-
-          <!-- user types block -->
           <v-card class="my-4">
             <v-card-actions>
               <v-card-title> User types </v-card-title>
@@ -757,6 +375,9 @@
             </v-expand-transition>
           </v-card>
         </v-container>
+        -->
+
+        <summary-info :dataForFrontEndForSummaryInfo="dataForFrontEnd" :currentPresetInfoForSummaryInfo="currentPresetInfo" v-on:changeCurrentEOne="updateCurrentE1($event)"> </summary-info>
       </v-stepper-content>
     </v-stepper-items>
 
@@ -885,6 +506,15 @@ import ClientBrands from "../components/ClientBrands.vue"
 //step2
 import ModulePresetPresetSelectie from "../components/ModulePresetPresetSelectie.vue"
 
+//step3
+import PresetOptions from '../components/presetOptions.vue'
+
+//step4
+import UsertypesSelection from "../components/UsertypesSelection.vue"
+
+//step5
+import SummaryInfo from "../components/SummaryInfo.vue"
+
 //library voor het maken van ZIP-mapjes. Zie: JSZIP
 import JSZip from "jszip";
 
@@ -897,9 +527,11 @@ import marketDataFromJSFile from '../data/marketsDataFile'
 import userTypeDataFromJSFile from '../data/userTypesDataFile'
 
 
+
+
 export default {
   
-  components: { Clientdetails, ClientDepartments, ClientBrands, ModulePresetPresetSelectie },
+  components: { Clientdetails, ClientDepartments, ClientBrands, ModulePresetPresetSelectie, PresetOptions, UsertypesSelection, SummaryInfo },
   name: "HelloWorld",
 
   data: () => ({
@@ -915,6 +547,7 @@ export default {
     showPreset: true,
     showModules: false,
     showCampaignChannels: false,
+    currentPresetInfo: {},
 
     // waarde voor tonen dialogscherm
     dialog: false,
@@ -967,7 +600,7 @@ export default {
     //data voor info modal
     tab: null,
     items: ["content", "info"],
-    currentPresetInfo: {},
+    
    
 
     // data voor markets
@@ -981,6 +614,12 @@ export default {
   methods: {
     updataCurrentPreset:function(updateCurrentPresetInfo){
       this.currentPresetInfo = updateCurrentPresetInfo
+    },
+
+    updateCurrentE1:function(updateCurrentE1Param){
+      this.e1 = updateCurrentE1Param
+
+      console.log(updateCurrentE1Param)
     },
 
     // add methodes pushen lege strings naar data voor front-end, zodat in de HTML lege text-boxes verschijnen
@@ -1077,15 +716,6 @@ export default {
         ...this.dataStep2.preset.publishProfiles,
       };
     },
-
-    presetInfo(CurrentPresetInfoParam) {
-      this.dialog = true;
-      this.currentPresetInfo = CurrentPresetInfoParam;
-    },
-    chosenPreset(CurrentPresetInfoParam) {
-      this.currentPresetInfo = CurrentPresetInfoParam;
-    },
-
     addDataStep4() {
       this.e1 = 5;
       this.dataForFrontEnd = {
