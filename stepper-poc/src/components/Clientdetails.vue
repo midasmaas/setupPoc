@@ -1,6 +1,6 @@
 <template>
     <!-- details block BEGIN -->
-          <v-card class="mt-3 mb-4">
+          <v-card v-if="dataForDetails" class="mt-3 mb-4">
             <v-card-actions>
               <v-card-title> Details </v-card-title>
 
@@ -63,7 +63,7 @@ props: {
     }
 },
 data: () => ({
-    showDetails: false
+    showDetails: true
 }),
 
 methods: {

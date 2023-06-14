@@ -40,7 +40,7 @@
             </p>
           </v-row>
 
-          <!-- details block BEGIN -->
+          <!-- details block BEGIN
           <v-card class="mt-3 mb-4">
             <v-card-actions>
               <v-card-title> Details </v-card-title>
@@ -91,7 +91,7 @@
               </div>
             </v-expand-transition>
           </v-card>
-          <!-- details block EINDE -->
+          details block EINDE -->
 
           <clientdetails :dataForDetails="dataStep1"></clientdetails>
 
@@ -99,130 +99,12 @@
           <h3 class="mx-1 my-6">Organisational structure</h3>
 
           <!-- Brands block BEGIN -->
-          <v-card class="my-8">
-            <v-card-actions>
-              <v-card-title> Brands </v-card-title>
-
-              <v-spacer></v-spacer>
-              <v-btn
-                @click="addBrandsTextfield"
-                class="ma-2"
-                outlined
-                color="blue"
-              >
-                add
-              </v-btn>
-
-              <v-btn icon @click="showBrands = !showBrands">
-                <v-icon>{{
-                  showBrands && dataStep1.brands.length > 0
-                    ? "mdi-chevron-up"
-                    : "mdi-chevron-down"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div
-                class="pb-1"
-                v-show="showBrands && dataStep1.brands.length > 0"
-              >
-                <v-divider></v-divider>
-
-                <v-card
-                  class="ma-4"
-                  outlined
-                  v-for="(brand, key) in dataStep1.brands"
-                  :key="key"
-                >
-                  <v-row align="center" justify="center">
-                    <v-text-field
-                      label="New brand"
-                      placeholder="Client"
-                      outlined
-                      v-model="dataStep1.brands[key]"
-                      class="shrink pt-8 mx-6"
-                    >
-                    </v-text-field>
-
-                    <v-spacer></v-spacer>
-
-                    <v-btn
-                      @click="dataStep1.brands.splice(key, 1)"
-                      class="ma-2"
-                      text
-                      color="grey"
-                    >
-                      <v-icon center> mdi-close</v-icon>
-                    </v-btn>
-                  </v-row>
-                </v-card>
-              </div>
-            </v-expand-transition>
-          </v-card>
+          <client-brands :dataForBrands="dataStep1"> </client-brands>
           <!-- Brands block EINDE -->
 
+          
           <!-- Departments block BEGIN -->
-          <v-card class="my-8">
-            <v-card-actions>
-              <v-card-title> Departments </v-card-title>
-
-              <v-spacer></v-spacer>
-              <v-btn
-                @click="addDepartmentsTextfield"
-                class="ma-2"
-                outlined
-                color="blue"
-              >
-                add
-              </v-btn>
-
-              <v-btn icon @click="showDeparments = !showDeparments">
-                <v-icon>{{
-                  showDeparments && dataStep1.departments.length > 0
-                    ? "mdi-chevron-up"
-                    : "mdi-chevron-down"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div
-                class="pb-1"
-                v-show="showDeparments && dataStep1.departments.length > 0"
-              >
-                <v-divider></v-divider>
-                <v-card
-                  class="ma-4"
-                  outlined
-                  v-for="(brand, key) in dataStep1.departments"
-                  :key="key"
-                >
-                  <v-row align="center" justify="center">
-                    <v-text-field
-                      label="New department"
-                      placeholder="Department"
-                      outlined
-                      v-model="dataStep1.departments[key]"
-                      class="shrink pt-8 mx-6"
-                    >
-                    </v-text-field>
-
-                    <v-spacer></v-spacer>
-
-                    <v-btn
-                      @click="dataStep1.departments.splice(key, 1)"
-                      class="ma-2"
-                      text
-                      color="grey"
-                    >
-                      <v-icon center> mdi-close</v-icon>
-                    </v-btn>
-                  </v-row>
-                </v-card>
-              </div>
-            </v-expand-transition>
-          </v-card>
+          <client-departments :dataForDepartments="dataStep1"></client-departments>
           <!-- Departments block EINDE -->
 
           <!-- Markets block BEGIN -->
@@ -316,8 +198,10 @@
               </div>
             </v-expand-transition>
           </v-card>
-          <!-- Markets block EINDE -->
+         <!-- Markets block EINDE -->
         </v-container>
+
+        
       </v-stepper-content>
 
       <!-- STEP 2: preset -->
@@ -1042,6 +926,8 @@
 
 //componenten
 import Clientdetails from "../components/Clientdetails.vue"
+import ClientDepartments from "../components/ClientDepartments.vue"
+import ClientBrands from "../components/ClientBrands.vue"
 
 //library voor het maken van ZIP-mapjes. Zie: JSZIP
 import JSZip from "jszip";
@@ -1054,9 +940,10 @@ import presetDataFromJSFile from '../data/presetDataFile.js'
 import marketDataFromJSFile from '../data/marketsDataFile'
 import userTypeDataFromJSFile from '../data/userTypesDataFile'
 
+
 export default {
   
-  components: { Clientdetails },
+  components: { Clientdetails, ClientDepartments, ClientBrands },
   name: "HelloWorld",
 
   data: () => ({
