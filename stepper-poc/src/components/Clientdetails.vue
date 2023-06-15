@@ -27,6 +27,7 @@
                       placeholder="Client name"
                       outlined
                       v-model="dataForDetails.clientName"
+                      :rules="[() => !!dataForDetails.clientName || 'This field is required', nameCheck]"
                     >
                     </v-text-field>
 
@@ -43,6 +44,9 @@
                       placeholder="example@company.com"
                       outlined
                       v-model="dataForDetails.contactCompany"
+                      :rules="[() => !!dataForDetails.contactCompany || 'This field is required',
+                      nameCheck
+                      ]"
                     >
                     </v-text-field>
                   </v-col>
@@ -60,6 +64,10 @@ name: 'Clientdetails',
 props: {
     dataForDetails: {
         type: Object
+    },
+
+    hasErrorsClientDetails: {
+        type: Boolean
     }
 },
 data: () => ({
@@ -67,7 +75,16 @@ data: () => ({
 }),
 
 methods: {
-
+nameCheck(){
+  if(this.dataForDetails.clientName === "" || this.dataForDetails.contactCompany === ""){
+    this.$emit('changeHasErrors', true)
+    return true
+  }
+  else{
+    this.$emit('changeHasErrors', false)
+    return false
+    }
+},
 }
 
 }

@@ -41,7 +41,7 @@
           </v-row>
 
           <!-- details block BEGIN -->
-          <clientdetails :dataForDetails="dataStep1"></clientdetails>
+          <clientdetails :dataForDetails="dataStep1" :hasErrorsClientDetails="formHasErrors" v-on:nameCheck="updateFormHasErrors($event)"></clientdetails>
           <!-- details block EINDE -->
 
           <!-- step sub title-->
@@ -55,7 +55,7 @@
           <client-departments :dataForDepartments="dataStep1"></client-departments>
           <!-- Departments block EINDE -->
 
-          <!-- Markets block BEGIN -->
+          <!--
           <v-card class="my-8">
             <v-card-actions>
               <v-card-title> Markets </v-card-title>
@@ -146,7 +146,8 @@
               </div>
             </v-expand-transition>
           </v-card>
-         <!-- Markets block EINDE -->
+           -->
+        <client-markets :dataStep1ForClientMarkets="dataStep1" :dataForMarketsForClientMarkets="dataForMarkets" :formHasErrorsMarkets="marketsIsEmpty"></client-markets>
         </v-container>
 
         
@@ -158,6 +159,7 @@
           <!-- pagina vraag + omschrijving -->
           <v-row class="mx-6 my-0">
             <h1>What’s the main goal of the client?</h1>
+            <p v-show="presetSelected" class="red--text pt-4"> Select a preset!</p>
             <p class="grey--text font-weight-medium">
               Start off with a predefined, goal based setup, campaign channels
               and a campaign format.
@@ -174,208 +176,12 @@
 
       <!-- STEP 4: user types -->
       <v-stepper-content step="4" class="step">
-        <usertypes-selection :dataStep4ForUserTypes="dataStep4" :dataUserTypesForUserTypes="dataForUserTypes"></usertypes-selection>
+        <usertypes-selection :dataStep4ForUserTypes="dataStep4" :dataUserTypesForUserTypes="dataForUserTypes" :userTypeSelectedForUserTypes="userTypeNotSelected"></usertypes-selection>
       </v-stepper-content>
 
       <!-- STEP 5: summary -->
       <v-stepper-content step="5" class="step">
-        <!--
-        <v-container class="containerUsertypes" fluid>
         
-          <v-card class="my-4">
-            <v-card-actions>
-              <v-card-title>
-                Client: {{ dataForFrontEnd.clientName }}
-              </v-card-title>
-
-              <v-spacer></v-spacer>
-
-              <v-btn outlined color="primary" class="mx-4" text @click="e1 = 1">
-                edit
-              </v-btn>
-              <v-btn icon @click="showSummaryClient = !showSummaryClient">
-                <v-icon>{{
-                  showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div class="pb-1" v-show="showSummaryClient">
-                <v-divider></v-divider>
-                <v-card class="ma-4" outlined>
-                  <v-row align="center" justify="center">
-                    <div class="modal-title-description ma-6">
-                      <h4>Brands</h4>
-                      <p class="mb-0 grey--text">
-                        {{ dataForFrontEnd.brands.join(", ") }}
-                      </p>
-                    </div>
-
-                    <v-spacer></v-spacer>
-                  </v-row>
-                </v-card>
-
-                <v-card class="ma-4" outlined>
-                  <v-row align="center" justify="center">
-                    <div class="modal-title-description ma-6">
-                      <h4>Departments</h4>
-                      <p class="mb-0 grey--text">
-                        {{ dataForFrontEnd.departments.join(", ") }}
-                      </p>
-                    </div>
-
-                    <v-spacer></v-spacer>
-                  </v-row>
-                </v-card>
-
-                <v-card class="ma-4" outlined>
-                  <v-row align="center" justify="center">
-                    <div class="modal-title-description ma-6">
-                      <h4>Markets</h4>
-                      <p class="mb-0 grey--text">
-                        {{
-                          dataForFrontEnd.markets
-                            .map((entry) => entry.marketCountry)
-                            .join(", ")
-                        }}
-                      </p>
-                    </div>
-
-                    <v-spacer></v-spacer>
-                  </v-row>
-                </v-card>
-              </div>
-            </v-expand-transition>
-          </v-card>
-          <v-card class="my-4">
-            <v-card-actions>
-              <v-card-title> Module- and campaign preset </v-card-title>
-
-              <v-spacer></v-spacer>
-
-              <v-btn outlined color="primary" class="mx-4" text @click="e1 = 2">
-                edit
-              </v-btn>
-              <v-btn icon @click="showSummaryClient = !showSummaryClient">
-                <v-icon>{{
-                  showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div class="pb-1" v-show="showSummaryClient">
-                <v-divider></v-divider>
-
-                <v-card class="ma-4" outlined>
-                  <v-row class="ma-6">
-                    <v-row>
-                      <div
-                        class="icon ma-2"
-                        :class="dataForFrontEnd.preset.iconClass"
-                      ></div>
-                      <div class="modal-title-description my-auto">
-                        <h4>{{ dataForFrontEnd.preset.title }}</h4>
-                        <p class="mb-0 grey--text">
-                          {{ currentPresetInfo.subTitle }}
-                        </p>
-                      </div>
-                    </v-row>
-                    <v-spacer></v-spacer>
-                  </v-row>
-                </v-card>
-              </div>
-            </v-expand-transition>
-          </v-card>
-          <v-card class="my-4">
-            <v-card-actions>
-              <v-card-title> Preset options </v-card-title>
-
-              <v-spacer></v-spacer>
-
-              <v-btn outlined color="primary" class="mx-4" text @click="e1 = 3">
-                edit
-              </v-btn>
-              <v-btn icon @click="showSummaryClient = !showSummaryClient">
-                <v-icon>{{
-                  showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div class="pb-1" v-show="showSummaryClient">
-                <v-divider></v-divider>
-
-                <v-card class="ma-4" outlined>
-                  <v-row align="center" justify="center">
-                    <div class="modal-title-description ma-6">
-                      <h4>Modules</h4>
-                      <p class="mb-0 grey--text">
-                        {{ dataForFrontEnd.preset.modules.join(", ") }}
-                      </p>
-                    </div>
-
-                    <v-spacer></v-spacer>
-                  </v-row>
-                </v-card>
-                <v-card class="ma-4" outlined>
-                  <v-row align="center" justify="center">
-                    <div class="modal-title-description ma-6">
-                      <h4>Channels</h4>
-                      <p class="mb-0 grey--text">
-                        {{ dataForFrontEnd.preset.channels.join(", ") }}
-                      </p>
-                    </div>
-
-                    <v-spacer></v-spacer>
-                  </v-row>
-                </v-card>
-              </div>
-            </v-expand-transition>
-          </v-card>
-          <v-card class="my-4">
-            <v-card-actions>
-              <v-card-title> User types </v-card-title>
-
-              <v-spacer></v-spacer>
-
-              <v-btn outlined color="primary" class="mx-4" text @click="e1 = 4">
-                edit
-              </v-btn>
-              <v-btn icon @click="showSummaryClient = !showSummaryClient">
-                <v-icon>{{
-                  showSummaryClient ? "mdi-chevron-up" : "mdi-chevron-down"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
-
-            <v-expand-transition>
-              <div class="pb-1" v-show="showSummaryClient">
-                <v-divider></v-divider>
-                <v-card
-                  v-for="(user, key) in dataForFrontEnd.userTypes"
-                  :key="key"
-                  class="ma-4"
-                  outlined
-                >
-                  <v-row align="center" justify="center">
-                    <div class="modal-title-description ma-6">
-                      <h4>{{ user.title }}</h4>
-                      <p class="mb-0 grey--text">
-                        {{ user.rights.join(", ") }}
-                      </p>
-                    </div>
-
-                    <v-spacer></v-spacer>
-                  </v-row>
-                </v-card>
-              </div>
-            </v-expand-transition>
-          </v-card>
-        </v-container>
-        -->
 
         <summary-info :dataForFrontEndForSummaryInfo="dataForFrontEnd" :currentPresetInfoForSummaryInfo="currentPresetInfo" v-on:changeCurrentEOne="updateCurrentE1($event)"> </summary-info>
       </v-stepper-content>
@@ -502,6 +308,7 @@
 import Clientdetails from "../components/Clientdetails.vue"
 import ClientDepartments from "../components/ClientDepartments.vue"
 import ClientBrands from "../components/ClientBrands.vue"
+import ClientMarkets from "../components/ClientMarkets.vue"
 
 //step2
 import ModulePresetPresetSelectie from "../components/ModulePresetPresetSelectie.vue"
@@ -531,7 +338,7 @@ import userTypeDataFromJSFile from '../data/userTypesDataFile'
 
 export default {
   
-  components: { Clientdetails, ClientDepartments, ClientBrands, ModulePresetPresetSelectie, PresetOptions, UsertypesSelection, SummaryInfo },
+  components: { Clientdetails, ClientDepartments, ClientBrands, ModulePresetPresetSelectie, PresetOptions, UsertypesSelection, SummaryInfo, ClientMarkets },
   name: "HelloWorld",
 
   data: () => ({
@@ -548,6 +355,10 @@ export default {
     showModules: false,
     showCampaignChannels: false,
     currentPresetInfo: {},
+    formHasErrors: false,
+    marketsIsEmpty: false,
+    presetSelected: false,
+    userTypeNotSelected: false,
 
     // waarde voor tonen dialogscherm
     dialog: false,
@@ -622,6 +433,10 @@ export default {
       console.log(updateCurrentE1Param)
     },
 
+    updateFormHasErrors:function(trueOrFalse){
+      this.formHasErrors = trueOrFalse
+    },
+
     // add methodes pushen lege strings naar data voor front-end, zodat in de HTML lege text-boxes verschijnen
     addBrandsTextfield() {
       this.showBrands = true;
@@ -652,6 +467,11 @@ export default {
     },
 
     addDataStep1() {
+      if (this.dataStep1.contactCompany === "" || this.dataStep1.clientName === "" || (this.dataStep1.markets).length === 0){
+        this.formHasErrors = true
+        this.marketsIsEmpty = true
+        console.log(this.formHasErrors)
+      } else
       this.e1 = 2;
       this.dataForFrontEnd = {
         ...this.dataForFrontEnd,
@@ -695,6 +515,10 @@ export default {
     },
 
     addDataStep2() {
+      if(Object.keys(this.currentPresetInfo).length === 0){
+        this.presetSelected = true
+      } else
+      
       this.e1 = 3;
       this.dataForFrontEnd = {
         ...this.dataForFrontEnd,
@@ -717,6 +541,9 @@ export default {
       };
     },
     addDataStep4() {
+      if(this.dataStep4.userTypes.length === 0){
+        this.userTypeNotSelected = true
+      } else
       this.e1 = 5;
       this.dataForFrontEnd = {
         ...this.dataForFrontEnd,
