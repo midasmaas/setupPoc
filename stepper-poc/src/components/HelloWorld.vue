@@ -434,7 +434,7 @@ export default {
 
       this.dataForCampaignFormat = {
         ...this.dataForCampaignFormat,
-        ...this.dataStep2,
+        ...this.dataStep2.preset.interfaceSetup
       };
 
       this.dataForSetup = {

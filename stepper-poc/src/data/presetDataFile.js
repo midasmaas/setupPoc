@@ -622,7 +622,15 @@ const dataForPresets = {
 
     preset2Data: {
       title: "Publish campaigns",
-      modules: ["multiMarket", "templateDesigner"],
+      modules: ["multiMarket",
+          "templateDesigner",
+          "Accounts analytics",
+          "publish Manager",
+          "Campaign Concepts",
+          "Multi Department",
+          "Multi Market",
+          "Dashboard Notifications",
+          "Campaign Planning"],
       channels: ["landingspage", "radio"],
       campaignformatTitle: "Publish campaigns",
       iconClass: "icon-publish-campaigns",
