@@ -1,7 +1,7 @@
 <template>
   <v-card class="my-8">
     <v-card-actions>
-      <v-card-title :class="formHasErrorsMarkets ? 'red--text'  : ''"> Markets</v-card-title>
+      <v-card-title :class="formHasErrorsMarkets ? 'red--text pt-4'  : ''"> Markets</v-card-title>
       <h8 v-if="formHasErrorsMarkets" class="red--text"> Select at least one market!</h8>
 
       <v-spacer></v-spacer>
