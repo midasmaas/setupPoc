@@ -1,12 +1,12 @@
 <template>
     <v-container class="containerClient" fluid>
           <!-- pagina vraag + omschrijving -->
-          <v-row class="mx-6 my-0">
+          <v-col class="mx-6 my-0">
             <h1>Do you want to edit the preset options?</h1>
             <p class="grey--text font-weight-medium">
               Edit the options in the preset or leave it as it is.
             </p>
-          </v-row>
+          </v-col>
 
           <!-- preset choice block -->
           <v-card class="my-8">

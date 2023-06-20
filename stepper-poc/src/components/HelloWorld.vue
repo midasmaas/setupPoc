@@ -32,16 +32,20 @@
       <v-stepper-content step="1" class="step">
         <v-container class="container" fluid>
           <!-- step title -->
-          <v-row class="ma-2">
+          <v-col class="ma-2">
             <h1>Which company is it and how is it organised?</h1>
             <p class="grey--text font-weight-medium">
               A company can use brands, departments, and markets to manage
               content and people.
             </p>
-          </v-row>
+          </v-col>
 
           <!-- details block BEGIN -->
-          <clientdetails :dataForDetails="dataStep1" :hasErrorsClientDetails="formHasErrors" v-on:nameCheck="updateFormHasErrors($event)"></clientdetails>
+          <clientdetails
+            :dataForDetails="dataStep1"
+            :hasErrorsClientDetails="formHasErrors"
+            v-on:nameCheck="updateFormHasErrors($event)"
+          ></clientdetails>
           <!-- details block EINDE -->
 
           <!-- step sub title-->
@@ -50,47 +54,70 @@
           <!-- Brands block BEGIN -->
           <client-brands :dataForBrands="dataStep1"> </client-brands>
           <!-- Brands block EINDE -->
-          
-          <!-- Departments block BEGIN -->
-          <client-departments :dataForDepartments="dataStep1"></client-departments>
-          <!-- Departments block EINDE -->
-        <client-markets :dataStep1ForClientMarkets="dataStep1" :dataForMarketsForClientMarkets="dataForMarkets" :formHasErrorsMarkets="marketsIsEmpty"></client-markets>
-        </v-container>
 
-        
+          <!-- Departments block BEGIN -->
+          <client-departments
+            :dataForDepartments="dataStep1"
+          ></client-departments>
+          <!-- Departments block EINDE -->
+          <client-markets
+            :dataStep1ForClientMarkets="dataStep1"
+            :dataForMarketsForClientMarkets="dataForMarkets"
+            :formHasErrorsMarkets="marketsIsEmpty"
+          ></client-markets>
+        </v-container>
       </v-stepper-content>
 
       <!-- STEP 2: preset -->
       <v-stepper-content step="2" class="step">
         <v-container class="containerClient" fluid>
           <!-- pagina vraag + omschrijving -->
-          <v-row class="mx-6 my-0">
+          <v-col class="mx-6 my-0">
             <h1>What’s the main goal of the client?</h1>
-            <p v-show="presetSelected" class="red--text pt-4"> Select a preset!</p>
+            <p v-show="presetSelected" class="red--text">Select a preset!</p>
             <p class="grey--text font-weight-medium">
               Start off with a predefined, goal based setup, campaign channels
               and a campaign format.
             </p>
-          </v-row>
-          <module-preset-preset-selectie v-on:changeCurrentPresetInModdule="updataCurrentPreset($event)" :currentPresetForModule="currentPresetInfo" :presetDataForModule="dataForPresets" :dataStep2ForModule="dataStep2"> </module-preset-preset-selectie>
+          </v-col>
+          <module-preset-preset-selectie
+            v-on:changeCurrentPresetInModdule="updataCurrentPreset($event)"
+            :currentPresetForModule="currentPresetInfo"
+            :presetDataForModule="dataForPresets"
+            :dataStep2ForModule="dataStep2"
+          >
+          </module-preset-preset-selectie>
         </v-container>
       </v-stepper-content>
 
       <!-- STEP 3: presetoptions -->
       <v-stepper-content step="3" class="step">
-      <preset-options :currentPresetForPresetOptions="currentPresetInfo" :frontEndDataForPresetOptions="dataForFrontEnd" :userTypesDatForPresetOptions="dataForUserTypes" :dataStep4ForPresetOptions="dataStep4"> </preset-options>
+        <preset-options
+          :currentPresetForPresetOptions="currentPresetInfo"
+          :frontEndDataForPresetOptions="dataForFrontEnd"
+          :userTypesDatForPresetOptions="dataForUserTypes"
+          :dataStep4ForPresetOptions="dataStep4"
+        >
+        </preset-options>
       </v-stepper-content>
 
       <!-- STEP 4: user types -->
       <v-stepper-content step="4" class="step">
-        <usertypes-selection :dataStep4ForUserTypes="dataStep4" :dataUserTypesForUserTypes="dataForUserTypes" :userTypeSelectedForUserTypes="userTypeNotSelected"></usertypes-selection>
+        <usertypes-selection
+          :dataStep4ForUserTypes="dataStep4"
+          :dataUserTypesForUserTypes="dataForUserTypes"
+          :userTypeSelectedForUserTypes="userTypeNotSelected"
+        ></usertypes-selection>
       </v-stepper-content>
 
       <!-- STEP 5: summary -->
       <v-stepper-content step="5" class="step">
-        
-
-        <summary-info :dataForFrontEndForSummaryInfo="dataForFrontEnd" :currentPresetInfoForSummaryInfo="currentPresetInfo" v-on:changeCurrentEOne="updateCurrentE1($event)"> </summary-info>
+        <summary-info
+          :dataForFrontEndForSummaryInfo="dataForFrontEnd"
+          :currentPresetInfoForSummaryInfo="currentPresetInfo"
+          v-on:changeCurrentEOne="updateCurrentE1($event)"
+        >
+        </summary-info>
       </v-stepper-content>
     </v-stepper-items>
 
@@ -209,25 +236,24 @@
 </template>
 
 <script>
-
 //componenten
 //step1
-import Clientdetails from "../components/Clientdetails.vue"
-import ClientDepartments from "../components/ClientDepartments.vue"
-import ClientBrands from "../components/ClientBrands.vue"
-import ClientMarkets from "../components/ClientMarkets.vue"
+import Clientdetails from "../components/Clientdetails.vue";
+import ClientDepartments from "../components/ClientDepartments.vue";
+import ClientBrands from "../components/ClientBrands.vue";
+import ClientMarkets from "../components/ClientMarkets.vue";
 
 //step2
-import ModulePresetPresetSelectie from "../components/ModulePresetPresetSelectie.vue"
+import ModulePresetPresetSelectie from "../components/ModulePresetPresetSelectie.vue";
 
 //step3
-import PresetOptions from '../components/presetOptions.vue'
+import PresetOptions from "../components/presetOptions.vue";
 
 //step4
-import UsertypesSelection from "../components/UsertypesSelection.vue"
+import UsertypesSelection from "../components/UsertypesSelection.vue";
 
 //step5
-import SummaryInfo from "../components/SummaryInfo.vue"
+import SummaryInfo from "../components/SummaryInfo.vue";
 
 //library voor het maken van ZIP-mapjes. Zie: JSZIP
 import JSZip from "jszip";
@@ -236,16 +262,21 @@ import JSZip from "jszip";
 import FileSaver from "file-saver";
 
 // import van vaste data: presets, user types
-import presetDataFromJSFile from '../data/presetDataFile.js'
-import marketDataFromJSFile from '../data/marketsDataFile'
-import userTypeDataFromJSFile from '../data/userTypesDataFile'
-
-
-
+import presetDataFromJSFile from "../data/presetDataFile.js";
+import marketDataFromJSFile from "../data/marketsDataFile";
+import userTypeDataFromJSFile from "../data/userTypesDataFile";
 
 export default {
-  
-  components: { Clientdetails, ClientDepartments, ClientBrands, ModulePresetPresetSelectie, PresetOptions, UsertypesSelection, SummaryInfo, ClientMarkets },
+  components: {
+    Clientdetails,
+    ClientDepartments,
+    ClientBrands,
+    ModulePresetPresetSelectie,
+    PresetOptions,
+    UsertypesSelection,
+    SummaryInfo,
+    ClientMarkets,
+  },
   name: "HelloWorld",
 
   data: () => ({
@@ -274,7 +305,6 @@ export default {
     dataForSetup: {},
     dataForCampaignFormat: {},
     dataForPublishProfiles: {},
-
 
     //data voor weergave front-end
     dataForFrontEnd: {
@@ -318,30 +348,26 @@ export default {
     //data voor info modal
     tab: null,
     items: ["content", "info"],
-    
-   
 
     // data voor markets
     dataForMarkets: marketDataFromJSFile,
 
     //data voor user types (checkboxes)
-    dataForUserTypes: userTypeDataFromJSFile
-
-    
+    dataForUserTypes: userTypeDataFromJSFile,
   }),
   methods: {
-    updataCurrentPreset:function(updateCurrentPresetInfo){
-      this.currentPresetInfo = updateCurrentPresetInfo
+    updataCurrentPreset: function (updateCurrentPresetInfo) {
+      this.currentPresetInfo = updateCurrentPresetInfo;
     },
 
-    updateCurrentE1:function(updateCurrentE1Param){
-      this.e1 = updateCurrentE1Param
+    updateCurrentE1: function (updateCurrentE1Param) {
+      this.e1 = updateCurrentE1Param;
 
-      console.log(updateCurrentE1Param)
+      console.log(updateCurrentE1Param);
     },
 
-    updateFormHasErrors:function(trueOrFalse){
-      this.formHasErrors = trueOrFalse
+    updateFormHasErrors: function (trueOrFalse) {
+      this.formHasErrors = trueOrFalse;
     },
 
     // add methodes pushen lege strings naar data voor front-end, zodat in de HTML lege text-boxes verschijnen
@@ -355,14 +381,13 @@ export default {
       this.dataStep1.departments.push("");
     },
 
-    
-    // pusht lege string en array naar 
+    // pusht lege string en array naar
     addMarketsTextfield() {
       this.showMarkets = true;
       this.dataStep1.markets.push({ marketCountry: "", marketLanguages: [] });
     },
 
-    returnCountries() { 
+    returnCountries() {
       return this.dataForMarkets.marketNames.map((market) => {
         const marketKey = Object.keys(market)[0];
         return market[marketKey];
@@ -374,12 +399,15 @@ export default {
     },
 
     addDataStep1() {
-      if (this.dataStep1.contactCompany === "" || this.dataStep1.clientName === "" || (this.dataStep1.markets).length === 0){
-        this.formHasErrors = true
-        this.marketsIsEmpty = true
-        console.log(this.formHasErrors)
-      } else
-      this.e1 = 2;
+      if (
+        this.dataStep1.contactCompany === "" ||
+        this.dataStep1.clientName === "" ||
+        this.dataStep1.markets.length === 0
+      ) {
+        this.formHasErrors = true;
+        this.marketsIsEmpty = true;
+        console.log(this.formHasErrors);
+      } else this.e1 = 2;
       this.dataForFrontEnd = {
         ...this.dataForFrontEnd,
         ...this.dataStep1,
@@ -417,16 +445,14 @@ export default {
         markets: marketData,
         languages: marketData,
         departments: departmentData,
-        brands: brandData
+        brands: brandData,
       };
     },
 
     addDataStep2() {
-      if(Object.keys(this.currentPresetInfo).length === 0){
-        this.presetSelected = true
-      } else
-      
-      this.e1 = 3;
+      if (Object.keys(this.currentPresetInfo).length === 0) {
+        this.presetSelected = true;
+      } else this.e1 = 3;
       this.dataForFrontEnd = {
         ...this.dataForFrontEnd,
         ...this.dataStep2,
@@ -434,7 +460,7 @@ export default {
 
       this.dataForCampaignFormat = {
         ...this.dataForCampaignFormat,
-        ...this.dataStep2.preset.interfaceSetup
+        ...this.dataStep2.preset.interfaceSetup,
       };
 
       this.dataForSetup = {
@@ -448,10 +474,9 @@ export default {
       };
     },
     addDataStep4() {
-      if(this.dataStep4.userTypes.length === 0){
-        this.userTypeNotSelected = true
-      } else
-      this.e1 = 5;
+      if (this.dataStep4.userTypes.length === 0) {
+        this.userTypeNotSelected = true;
+      } else this.e1 = 5;
       this.dataForFrontEnd = {
         ...this.dataForFrontEnd,
         ...this.dataStep4,
@@ -494,5 +519,4 @@ export default {
   },
 };
 </script>
-<style scoped src="@/assets/styles/stepper.css">
-</style>
+<style scoped src="@/assets/styles/stepper.css"></style>

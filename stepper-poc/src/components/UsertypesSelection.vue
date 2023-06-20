@@ -1,14 +1,14 @@
 <template>
     <v-container v-if="dataUserTypesForUserTypes" class="containerUsertypes" fluid>
           <!-- pagina vraag + omschrijving -->
-          <v-row class="mx-6 my-0">
+          <v-col class="mx-6 my-0">
             <h1>What user types do you want to use?</h1>
             <p v-if="userTypeSelectedForUserTypes" class="red--text">Select at least one user type!</p>
             <p class="grey--text font-weight-medium">
               Users have unique rights, allowing the customer to collaborate in
               their own way.
             </p>
-          </v-row>
+          </v-col>
 
           <v-card class="pa-4 ma-4">
             <v-row class="ma-2">

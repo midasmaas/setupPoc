@@ -2,7 +2,7 @@
   <v-card class="my-8">
     <v-card-actions>
       <v-card-title :class="formHasErrorsMarkets ? 'red--text pt-4'  : ''"> Markets</v-card-title>
-      <h8 v-if="formHasErrorsMarkets" class="red--text"> Select at least one market!</h8>
+      <h6 v-if="formHasErrorsMarkets" class="red--text"> Select at least one market!</h6>
 
       <v-spacer></v-spacer>
       <v-btn @click="addMarketsTextfield" class="ma-2" outlined color="blue">

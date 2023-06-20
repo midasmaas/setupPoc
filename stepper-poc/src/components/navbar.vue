@@ -1,9 +1,9 @@
 <template>
+
     <v-navigation-drawer
 
 
         :mini-variant= true
-        expand-on-hover
         fixed
         app
       >
@@ -12,6 +12,7 @@
           nav
           class="py-0"
         >
+        <img class="pt-4" src="../assets/navbarImgs/clientAvatar.svg">
            <v-list-item :to="'/homeView'"
         >
           <v-list-item-icon>
@@ -46,6 +47,9 @@
         </v-list-item>
         </v-list>
       </v-navigation-drawer>
+      
+
+      
 </template>
 
 <script>
@@ -53,8 +57,8 @@ export default {
   name: 'navBar',
   data() {
     return {
-      drawer: true,
-      mini: true,
+      //drawer: true,
+      //mini: true,
     };
   },
 };
